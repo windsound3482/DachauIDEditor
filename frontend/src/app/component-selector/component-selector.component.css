@@ -1,0 +1,12 @@
+.mat-tab-group {
+    margin-bottom: 48px;
+    vertical-align: top;
+  }
+.Information {
+    float:left;
+    width: 60%;
+}
+.Handler {
+    float:left;
+    width: 40%;
+}

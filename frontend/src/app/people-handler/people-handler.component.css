@@ -1,0 +1,27 @@
+table {
+    width: 100%;
+}
+
+.mat-mdc-form-field {
+    height: 5%;
+    font-size: 12px;
+    width: 30%;
+}
+
+td, th {
+    width: 5% ;
+}
+
+table {
+    width:33vw;
+    min-width: 33vw;
+}
+
+.mat-mdc-table .mdc-data-table__header-row {
+    height: 15px;
+    font-size: 11px;
+  }
+.mat-mdc-table .mdc-data-table__row{
+    height: 15px;
+    font-size: 11px;
+}

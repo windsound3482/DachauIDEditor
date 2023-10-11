@@ -1,0 +1,9 @@
+.example-form-field {
+    width: 10%;
+  }
+
+.mat-mdc-form-field {
+font-size: 10px;
+width: 90%;
+}
+
