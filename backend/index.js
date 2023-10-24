@@ -1,26 +1,44 @@
-var express = require('express')
-var app = express()
-const port = 3000
+const express = require('express')
+const app = express()
+const sqlite3 = require("sqlite3").verbose();
+const filepath = "./dachau.db";
+const port=80
+const db= new sqlite3.Database(filepath, (error) => {
+  if (error) {
+    return console.error(error.message);
+  }
+});
+
+
+function addPerson(name) {
+  db.run(`
+  INSERT INTO objects (type, data)
+  VALUES (?, ?)`,
+  ['Person',name],
+  function (error) {
+    if (error) {
+      console.error(error.message);
+    }
+    console.log(`Inserted a row with the ID: ${this.lastID}`);
+  }
+  );
+}
+
+function selectRows(res) {
+  db.each(`SELECT * FROM objects`, (error, row) => {
+    if (error) {
+      throw new Error(error.message);
+    }
+    res.send(row);
+  });
+}
+
+
 app.get('/', function (req, res) {
-  res.json(
-    { [
-      K071270:{
-        Nachname:"KAUFMANN",
-        Vorname:"MICHAEL",
-        Geburtsort:"Csikszerada",
-        GebTag
-      }
-      			3	11	1897	Auschwitz	18/06/44	AL 3	AL 1	23/01/45		m
-  ]})
-    
-})
+  addPerson("Albert Einstein");
+  selectRows(res);
+});
 
-Geburtsort
-
-Nachname	Vorname			GebMon	GebJahr	Zugang von	Zugang Datum	Zugang in	Überführt nach	Überführt Da	Gestorben	Geschlecht
-
-
-  
-app.listen(port, () => {
-  console.log(`Example app listening on port ${port}`)
-})
+app.listen(port, "10.10.10.110", () => {
+  console.log(`Example app listening on port ${port}`);
+});
