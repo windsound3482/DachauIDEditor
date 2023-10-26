@@ -21,6 +21,8 @@ import { PeopleInformationComponent } from './people-information/people-informat
 import { FileUploadComponent } from './file-upload/file-upload.component';
 import { ComponentSelectorComponent } from './component-selector/component-selector.component';
 import {MatTabsModule} from '@angular/material/tabs';
+import { NetworkgraphComponent } from './networkgraph/networkgraph.component';
+import { NgxGraphModule } from '@swimlane/ngx-graph';
 
 @NgModule({
   declarations: [
@@ -30,7 +32,8 @@ import {MatTabsModule} from '@angular/material/tabs';
     MultimediaHandlerComponent,
     PeopleInformationComponent,
     FileUploadComponent,
-    ComponentSelectorComponent
+    ComponentSelectorComponent,
+    NetworkgraphComponent
   ],
   imports: [
     BrowserModule,
@@ -46,7 +49,8 @@ import {MatTabsModule} from '@angular/material/tabs';
     MatButtonModule, 
     MatIconModule,
     MatCardModule,
-    MatTabsModule
+    MatTabsModule,
+    NgxGraphModule
   ],
   providers: [],
   bootstrap: [AppComponent]
