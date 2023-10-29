@@ -1,0 +1,22 @@
+<div>
+    <div mat-dialog-content>
+      <p>New {{title}}</p>
+      <mat-form-field>
+        <mat-label>ID(Optional)</mat-label>
+        <input matInput [(ngModel)]="id" (ngModelChange)="confirm=false">
+      </mat-form-field>
+      <mat-form-field>
+        <mat-label>Type</mat-label>
+        <input matInput [(ngModel)]="type" (ngModelChange)="confirm=false" [disabled]="typeEditDisabled==true">
+      </mat-form-field>
+      <mat-form-field>
+        <mat-label>Name</mat-label>
+        <input matInput [(ngModel)]="name" (ngModelChange)="confirm=false">
+      </mat-form-field>
+    </div>
+    <div mat-dialog-actions>
+      <button mat-button (click)="onNoClick()">Cancel</button>
+      <button mat-button (click)="OnApplyClick()" cdkFocusInitial [disabled]="inputCheck()">Apply</button>
+      <button mat-button (click)="OnConfirmClick()" *ngIf="confirm" [disabled]="inputCheck()">Confirm</button>
+    </div>
+</div>

@@ -1,8 +1,4 @@
 .ComponentSelector {
-    float: left;
-    width: 70%;
+    width: 100%;
 }
-.RelationEditor {
-    float: left;
-    width:20%
-}
+

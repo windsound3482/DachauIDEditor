@@ -1,8 +1,9 @@
 
 {
-    "/api": {
-        "target": "http://archive.projects.bayern",
-        "secure": false
+    "/api/*": {
+        "target": "https://archive.projects.bayern",
+        "secure": true,
+        "changeOrigin": true
     }
 }
 

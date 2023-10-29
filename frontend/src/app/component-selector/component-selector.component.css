@@ -2,11 +2,19 @@
     margin-bottom: 48px;
     vertical-align: top;
   }
-.Information {
-    float:left;
-    width: 60%;
+.Information1 {
+    float: left;
+    width: 25%;
 }
-.Handler {
+.Handler1 {
     float:left;
-    width: 40%;
+    width: 25%;
+}
+.Information2 {
+    float: left;
+    width: 25%;
+}
+.Handler2 {
+    float:left;
+    width: 25%;
 }
