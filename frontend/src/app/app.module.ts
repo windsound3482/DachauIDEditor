@@ -18,7 +18,6 @@ import {MatIconModule} from '@angular/material/icon';
 import {MatCardModule} from '@angular/material/card';
 import { PeopleInformationComponent } from './people-information/people-information.component';
 import { FileUploadComponent } from './file-upload/file-upload.component';
-import { ComponentSelectorComponent } from './component-selector/component-selector.component';
 import {MatTabsModule} from '@angular/material/tabs';
 import { NetworkgraphComponent } from './networkgraph/networkgraph.component';
 import { NgxGraphModule } from '@swimlane/ngx-graph';
@@ -37,7 +36,6 @@ import {MatSelectModule} from '@angular/material/select';
     MultimediaHandlerComponent,
     PeopleInformationComponent,
     FileUploadComponent,
-    ComponentSelectorComponent,
     NetworkgraphComponent,
     ToolboxComponent,
     AddObjectDialogComponent

@@ -1,9 +1,8 @@
-.example-form-field {
-    width: 10%;
-  }
+td {
+  padding-right: 0.5vw;
+}
 
-.mat-mdc-form-field {
-font-size: 10px;
-width: 90%;
+.example-full-width {
+  width: 12vw;
 }
 

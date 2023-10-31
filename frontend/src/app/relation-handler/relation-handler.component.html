@@ -1,84 +1,62 @@
-<div class="example-form">
-    <table class="example-full-width" cellspacing="0">
-        <tr>
-            <td class="example-form-field">
-                <mat-form-field >
-                    <input matInput type="text" [(ngModel)]="SubjectType" disabled="True">
-                    
-                </mat-form-field>
-            </td>
-            <td class="example-form-field">
-                <mat-form-field >
-                    <input matInput type="text" [(ngModel)]="SubjectName" disabled="True">
-                    
-                </mat-form-field>
-            </td>
-            <td class="example-form-field">
-                <mat-form-field >
-                    <input matInput type="text" [(ngModel)]="SubjectID" disabled="True">
-                    
-                </mat-form-field>
-            </td>
-        </tr>
-        <tr>
-            <td class="example-form-field">
-                <mat-form-field >
-                    <input matInput type="text" [(ngModel)]="RelationType" disabled="True">
-                    
-                </mat-form-field>
-            </td>
-            <td class="example-form-field">
-                <mat-form-field >
-                    <input matInput type="text" [(ngModel)]="RelationValue" disabled="True">
-                    
-                </mat-form-field>
-            </td>
-            <td class="example-form-field">
-                <mat-form-field >
-                    <input matInput type="text" [(ngModel)]="RelationID" disabled="True">
-                    
-                </mat-form-field>
-            </td>
-        </tr>
-        <tr>
-            <td class="example-form-field">
-                <mat-form-field >
-                    <input matInput type="text" [(ngModel)]="ObjectType" disabled="True">
-                    
-                </mat-form-field>
-            </td>
-            <td class="example-form-field">
-                <mat-form-field >
-                    <input matInput type="text" [(ngModel)]="ObjectName" disabled="True">
-                    
-                </mat-form-field>
-            </td>
-            <td class="example-form-field">
-                <mat-form-field >
-                    <input matInput type="text" [(ngModel)]="ObjectID" disabled="True">
-                    
-                </mat-form-field>
-            </td>
-        </tr>
-        <tr>
-            <td class="example-form-field">
-                <button  matSuffix mat-icon-button aria-label="Clear" (click)="SubjectType=''" height="100%">
-                    <mat-icon>done</mat-icon>
-                </button>
-                    
-                  
-            </td>
-            <td class="example-form-field">
-                
-            </td>
-            
-            <button matSuffix mat-icon-button aria-label="Clear" (click)="SubjectType=''" height="100%">
-                <mat-icon>close</mat-icon>
-            </button>
-        </tr>
-        
-        
-    </table>
+<table class="example-full-width" cellspacing="0"><tr>
+    <td>
+      <mat-form-field class="example-full-width">
+        <mat-label>ID</mat-label>
+        <input matInput [(ngModel)]="aobject.id" disabled="true">
+      </mat-form-field>
+      
+    </td>
+    <td>
+      <mat-form-field class="example-full-width">
+        <mat-label>Type</mat-label>
+        <input matInput [(ngModel)]="aobject.type"  disabled="true">
+      </mat-form-field>
+      
+    </td>
+    <td>
+      <mat-form-field class="example-full-width" >
+        <mat-label>Value</mat-label>
+        <input matInput [(ngModel)]="aobject.data" disabled="true">
+      </mat-form-field>
+    </td>
+    <td></td> <td></td> <td></td> <td></td> <td></td> <td></td> <td></td> <td></td> <td></td> <td></td> 
+    <td>
+      <mat-form-field class="example-full-width">
+        <mat-label>Relation</mat-label>
+        <input matInput [(ngModel)]="relation" (ngModelChange)="confirm=false">
+          <button *ngIf="!confirm" (click)="onApplyClick()" matSuffix mat-icon-button  [disabled]="inputCheck()" color="primary"> <mat-icon>cloud_upload</mat-icon> </button>
+          <button *ngIf="confirm" (click)="OnConfirmClick()" matSuffix mat-icon-button  [disabled]="inputCheck()" color="accent"> <mat-icon>cloud_upload</mat-icon> </button>
+          
+          
+          
+      </mat-form-field>
+      
+    </td>
+    <td></td> <td></td> <td></td> <td></td> <td></td> <td></td> <td></td> <td></td> <td></td> 
 
-</div>
+
+    <td>
+      <mat-form-field class="example-full-width">
+        <mat-label>ID</mat-label>
+        <input matInput [(ngModel)]="bobject.id" disabled="true">
+      </mat-form-field>
+      
+    </td>
+    <td>
+      <mat-form-field class="example-full-width">
+        <mat-label>Type</mat-label>
+        <input matInput [(ngModel)]="bobject.type"  disabled="true">
+      </mat-form-field>
+      
+    </td>
+    <td>
+      <mat-form-field class="example-full-width">
+        <mat-label>Value</mat-label>
+        <input matInput [(ngModel)]="bobject.data" disabled="true">
+      </mat-form-field>
+    </td>
+    
+</tr></table>
+            
+       
 

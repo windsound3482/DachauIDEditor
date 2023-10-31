@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component,Input } from '@angular/core';
 
 import {MatDialog} from '@angular/material/dialog';
 
@@ -10,11 +10,12 @@ import { AddObjectDialogComponent } from '../add-object-dialog/add-object-dialog
 })
 export class ToolboxComponent {
   constructor(public dialog: MatDialog) { }
-  addPerson(){
+  @Input() type="Person";
+  addObject(){
     const dialogRef = this.dialog.open(AddObjectDialogComponent);
     let instance = dialogRef.componentInstance;
-    instance.type = "Person";
-    instance.title = "Person";
+    instance.type = this.type;
+    instance.title = this.type;
   }
 
   

@@ -1,7 +1,8 @@
-import { Component,Input, Output, EventEmitter} from '@angular/core';
+import { Component,Input, Output, EventEmitter, ViewChild} from '@angular/core';
 import {MatDialog} from '@angular/material/dialog';
 import {FormControl} from '@angular/forms'
 import { AddObjectDialogComponent } from '../add-object-dialog/add-object-dialog.component';
+import { NetworkgraphComponent } from '../networkgraph/networkgraph.component';
 @Component({
   selector: 'app-people-information',
   templateUrl: './people-information.component.html',
@@ -9,12 +10,24 @@ import { AddObjectDialogComponent } from '../add-object-dialog/add-object-dialog
 })
 export class PeopleInformationComponent  {
   @Input() typeList=[{type:'Person'}];
+  @Input() graphID="Left"
   @Output() refreshTypeListEvent = new EventEmitter<string>();
+  @Output() onChangeObject = new EventEmitter<any>();
+  @ViewChild(NetworkgraphComponent) 
+  private networkComponent!: NetworkgraphComponent;
+
+  
+
+  currentObject={type:"Person",id:null,data:""}
   constructor(public dialog: MatDialog) { }
-  Person:any=null;
   typeControlValue=new FormControl('Person');
   NotPropertyList=['Person']
   prevMatSelectValue:any='Person'
+
+  refreshRelation(){
+    this.networkComponent.refreshTheGraph(this.currentObject);
+  }
+
   public onMatSelectOpen(form:any): void {
     this.prevMatSelectValue = this.typeControlValue.value;
   }
@@ -30,12 +43,41 @@ export class PeopleInformationComponent  {
       instance.typeEditDisabled=false;
       dialogRef.afterClosed().subscribe(result => {
         if (result!=null){
-          this.refreshTypeListEvent.emit("");
+          console.log(result)
+          this.refreshTypeListEvent.emit(result.data);
+          this.currentObjectChange({
+            id:null,
+            type:result.data,
+            data:""
+          })
           this.typeControlValue.setValue(result.data);
+          
         }
       });
     }
+    else{
+      this.currentObjectChange({
+        id:null,
+        type:this.typeControlValue.value as string,
+        data:""
+      })
+    }
   };
+
+  currentObjectChange(newObject:any){
+    this.currentObject=newObject;
+    this.onChangeObject.emit(newObject);
+    this.typeControlValue.setValue(newObject.type);
+  }
+  refreshType(){
+    this.currentObjectChange({
+      id:null,
+      type:this.typeControlValue.value as string,
+      data:""
+    })
+  }
+
+
   
 
 }

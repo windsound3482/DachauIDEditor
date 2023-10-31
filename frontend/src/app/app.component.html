@@ -1,8 +1,19 @@
 <div class="parent">
-  <div class='ComponentSelector'><app-component-selector></app-component-selector></div>
+  <div>
+        
+    <div class='Handler1'>
+        <app-people-information #card [graphID]="'Left'" [typeList]="typelist" (refreshTypeListEvent)="getTypeList()" (onChangeObject)="leftObject=$event"></app-people-information>
+        
+    </div>
+    <div class='Handler2'>
+        <app-people-information #card [graphID]="'Right'" [typeList]="typelist" (refreshTypeListEvent)="getTypeList()" (onChangeObject)="rightObject=$event"></app-people-information>
+    </div>
+  </div>
+
   <br style="clear:both"/>
-  <app-toolbox></app-toolbox>
-  <div class='RelationEditor'><app-relation-handler></app-relation-handler></div>
+  
+  <app-relation-handler [refreshaObject]="leftObject" [refreshbObject]="rightObject" (onChange)="relationRefresh()"></app-relation-handler>
+
 </div>
 
 
