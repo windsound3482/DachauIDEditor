@@ -2,11 +2,11 @@
   <div>
         
     <div class='Handler1'>
-        <app-people-information #card [graphID]="'Left'" [typeList]="typelist" (refreshTypeListEvent)="getTypeList()" (onChangeObject)="leftObject=$event"></app-people-information>
+        <app-people-information #card [graphID]="'Left'" [typeList]="typelist" (refreshTypeListEvent)="getTypeList()" (onChangeObject)="leftObject=$event;relationRefresh();"></app-people-information>
         
     </div>
     <div class='Handler2'>
-        <app-people-information #card [graphID]="'Right'" [typeList]="typelist" (refreshTypeListEvent)="getTypeList()" (onChangeObject)="rightObject=$event"></app-people-information>
+        <app-people-information #card [graphID]="'Right'" [typeList]="typelist" (refreshTypeListEvent)="getTypeList()" (onChangeObject)="rightObject=$event;relationRefresh();"></app-people-information>
     </div>
   </div>
 
