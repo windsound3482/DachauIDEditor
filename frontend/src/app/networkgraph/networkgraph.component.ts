@@ -1,7 +1,9 @@
 import { Component ,Input,Output, EventEmitter} from '@angular/core';
 import { DatabaseService } from '../database.service';
 import { NetworkgraphService } from '../networkgraph.service';
-import { DagreLayout } from '@swimlane/ngx-graph'
+import { ComfirmDeleteObjectDialogComponent } from '../comfirm-delete-object-dialog/comfirm-delete-object-dialog.component';
+import { ConfirmDeleteRelationDialogComponent } from '../confirm-delete-relation-dialog/confirm-delete-relation-dialog.component';
+import {MatDialog} from '@angular/material/dialog';
 
 
 
@@ -13,24 +15,27 @@ import { DagreLayout } from '@swimlane/ngx-graph'
 export class NetworkgraphComponent {
   constructor(
     private service: DatabaseService,
-    private networkservice:NetworkgraphService
+    private networkservice:NetworkgraphService,
+    public dialog: MatDialog
   ) {}
   @Input() graphID="Left"
   nodes=[]
   links=[]
+  currentObject={type:"Person",id:null,data:""}
   @Input() set refreshWithType(data:any){
     this.refreshTheGraph(data);
+    this.currentObject=data;
     
   }
 
-  refreshTheGraph(data:any){
-    this.service.listObject(data.type,data.id).then((data) => {
-      console.log(data);
-      this.networkservice.configureData({node:data.nodes,links:data.links,graphID:this.graphID})
+  refreshTheGraph(object:any){
+    this.service.listObject(object.type,object.id).then((data) => {
+      
+      this.networkservice.configureData({node:data.nodes,links:data.links,graphID:this.graphID},object.id) as any
       this.nodes=data.nodes?Object.assign(data.nodes):null;
       
       this.links=data.links?Object.assign(data.links):null;
-    
+      console.log(this.nodes)
       
     });
   }
@@ -45,6 +50,35 @@ export class NetworkgraphComponent {
         id:node.id.split("Node"+this.graphID)[1]
       }
     )
+  }
+
+  onNodeRightClick(node:any){
+    const dialogRef = this.dialog.open(ComfirmDeleteObjectDialogComponent);
+    let instance = dialogRef.componentInstance;
+    instance.id = node.id.split("Node"+this.graphID)[1];
+    instance.name = node.label;
+    instance.type = node.type;
+    dialogRef.afterClosed().subscribe((result:any) => {
+      if (result!=null){
+        console.log(result)
+        this.nodeChanged.emit(result.data)
+      }
+    });
+
+  }
+
+  onEdgeRightClick(link:any){
+    const dialogRef = this.dialog.open(ConfirmDeleteRelationDialogComponent);
+    let instance = dialogRef.componentInstance;
+    instance.id = link.id.split("Link"+this.graphID)[1];
+    
+    dialogRef.afterClosed().subscribe((result:any) => {
+      if (result!=null){
+        console.log(result)
+        this.nodeChanged.emit(this.currentObject)
+      }
+    });
+
   }
 }
 

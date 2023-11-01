@@ -2,7 +2,9 @@ import { Component,Input, Output, EventEmitter, ViewChild} from '@angular/core';
 import {MatDialog} from '@angular/material/dialog';
 import {FormControl} from '@angular/forms'
 import { AddObjectDialogComponent } from '../add-object-dialog/add-object-dialog.component';
+import { ComfirmDeleteObjectDialogComponent } from '../comfirm-delete-object-dialog/comfirm-delete-object-dialog.component';
 import { NetworkgraphComponent } from '../networkgraph/networkgraph.component';
+import { FileserverService } from '../fileserver.service';
 @Component({
   selector: 'app-people-information',
   templateUrl: './people-information.component.html',
@@ -19,10 +21,42 @@ export class PeopleInformationComponent  {
   
 
   currentObject={type:"Person",id:null,data:""}
-  constructor(public dialog: MatDialog) { }
+  constructor(
+      public dialog: MatDialog,
+      private fileservice:FileserverService
+    ) { }
   typeControlValue=new FormControl('Person');
   NotPropertyList=['Person']
   prevMatSelectValue:any='Person'
+
+  addObject(){
+    const dialogRef = this.dialog.open(AddObjectDialogComponent);
+    let instance = dialogRef.componentInstance;
+    instance.id = this.currentObject.id;
+    instance.name = this.currentObject.data;
+    instance.type = this.currentObject.type;
+    instance.title = this.currentObject.type;
+    dialogRef.afterClosed().subscribe(result => {
+      if (result!=null){
+        console.log(result)
+        this.currentObjectChange(result.data)
+      }
+    });
+  }
+
+  deleteObject(){
+    const dialogRef = this.dialog.open(ComfirmDeleteObjectDialogComponent);
+    let instance = dialogRef.componentInstance;
+    instance.id = this.currentObject.id;
+    instance.name = this.currentObject.data;
+    instance.type = this.currentObject.type;
+    dialogRef.afterClosed().subscribe(result => {
+      if (result!=null){
+        console.log(result)
+        this.currentObjectChange(result.data)
+      }
+    });
+  }
 
   refreshRelation(){
     this.networkComponent.refreshTheGraph(this.currentObject);
@@ -44,13 +78,9 @@ export class PeopleInformationComponent  {
       dialogRef.afterClosed().subscribe(result => {
         if (result!=null){
           console.log(result)
-          this.refreshTypeListEvent.emit(result.data);
-          this.currentObjectChange({
-            id:null,
-            type:result.data,
-            data:""
-          })
-          this.typeControlValue.setValue(result.data);
+          this.refreshTypeListEvent.emit(result.data.type);
+          this.currentObjectChange(result.data)
+          this.typeControlValue.setValue(result.data.type);
           
         }
       });
@@ -75,6 +105,18 @@ export class PeopleInformationComponent  {
       type:this.typeControlValue.value as string,
       data:""
     })
+  }
+
+  downloadCurrentObject(){
+    let filename=".json"
+    if (this.currentObject.data!="")
+      filename=this.currentObject.data+filename
+    else
+      filename=this.currentObject.type+filename
+    this.fileservice.downloadFile(JSON.stringify({
+      nodes:this.networkComponent.nodes,
+      links:this.networkComponent.links
+    }),filename)
   }
 
 

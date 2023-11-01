@@ -23,9 +23,10 @@ import { NetworkgraphComponent } from './networkgraph/networkgraph.component';
 import { NgxGraphModule } from '@swimlane/ngx-graph';
 import {MatSnackBarModule} from '@angular/material/snack-bar';
 import {MatDialogModule} from '@angular/material/dialog';
-import { ToolboxComponent } from './toolbox/toolbox.component';
 import { AddObjectDialogComponent } from './add-object-dialog/add-object-dialog.component';
 import {MatSelectModule} from '@angular/material/select';
+import { ComfirmDeleteObjectDialogComponent } from './comfirm-delete-object-dialog/comfirm-delete-object-dialog.component';
+import { ConfirmDeleteRelationDialogComponent } from './confirm-delete-relation-dialog/confirm-delete-relation-dialog.component';
 
 
 
@@ -37,8 +38,9 @@ import {MatSelectModule} from '@angular/material/select';
     PeopleInformationComponent,
     FileUploadComponent,
     NetworkgraphComponent,
-    ToolboxComponent,
-    AddObjectDialogComponent
+    AddObjectDialogComponent,
+    ComfirmDeleteObjectDialogComponent,
+    ConfirmDeleteRelationDialogComponent
   ],
   imports: [
     BrowserModule,

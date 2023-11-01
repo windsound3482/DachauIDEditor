@@ -26,6 +26,33 @@ export class DatabaseService {
     
   }
 
+  async deleteObject(id:any,type:string){
+    const url: string = 'http://localhost:4200/api/Objects/deleteObject';
+    let response = await fetch(url,{
+      method: 'POST',
+      body: JSON.stringify({
+        'id':id,
+        "type":type,
+      }),
+      headers: { "Content-Type": "application/json" }
+    });
+    let data: any = await response.json();
+    return data;
+  }
+
+  async deleteRelation(id:any){
+    const url: string = 'http://localhost:4200/api/Relations/deleteRelation';
+    let response = await fetch(url,{
+      method: 'POST',
+      body: JSON.stringify({
+        'id':id
+      }),
+      headers: { "Content-Type": "application/json" }
+    });
+    let data: any = await response.json();
+    return data;
+  }
+
   async addRelation(aid:any,relation:string,bid:any,forced=false){
     const url: string = 'http://localhost:4200/api/Relations/addOrGetRelation';
     let response = await fetch(url,{

@@ -33,7 +33,7 @@ export class AddObjectDialogComponent {
         this.confirm=true;
       }
       else{
-        this.dialogRef.close({data:this.type});
+        this.dialogRef.close({data:data.data});
       }
       this._snackBar.open(data['Msg'], "close");
     });
@@ -41,7 +41,7 @@ export class AddObjectDialogComponent {
 
   OnConfirmClick():void{
     this.service.addObject(this.id,this.type,this.name,true).then((data) => {
-      this.dialogRef.close({data:this.type});
+      this.dialogRef.close({data:data.data});
       this._snackBar.open(data['Msg'], "close");
     });
   }

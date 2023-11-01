@@ -28,21 +28,25 @@
       <svg:g
         class="node"
         (dblclick)="onNodeClick(node)"
+        (contextmenu)="onNodeRightClick(node)"
       >
         <svg:rect
           [attr.width]="node.dimension.width"
           [attr.height]="node.dimension.height"
           [attr.fill]="node.color"
+          
         
         />
-        <svg:text alignment-baseline="central" [attr.x]="10" [attr.y]="node.dimension.height / 2" [attr.fill]="node.fontcolor">
+        <svg:text alignment-baseline="central" [style.font-weight]="node.fontWeight" [attr.x]="10" [attr.y]="node.dimension.height / 2" [attr.fill]="node.fontcolor" >
           {{node.label}}
         </svg:text>
       </svg:g>
     </ng-template>
 
     <ng-template #linkTemplate let-link>
-      <svg:g class="edge">
+      <svg:g class="edge"
+        (contextmenu)="onEdgeRightClick(link)"
+        >
         <svg:path class="line" stroke-width="1" marker-end="url(#arrow)"></svg:path>
         <svg:text class="edge-label" text-anchor="middle">
           <textPath

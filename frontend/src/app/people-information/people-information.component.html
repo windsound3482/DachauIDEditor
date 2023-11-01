@@ -24,10 +24,9 @@
       </div>
     </mat-card-content>
     <mat-card-actions>
-      <button mat-button color="accent" > <mat-icon>cloud_download</mat-icon> {{currentObject.data}}</button>
-      <button mat-button color="accent"><mat-icon>assignment_returned</mat-icon> Related Information</button>
-      <app-toolbox [type]="currentObject.type"></app-toolbox>
-      <button mat-button color="accent" [disabled]="currentObject.id=='' || currentObject.id==null"><mat-icon>remove_circle_outline</mat-icon></button>
+      <button mat-button color="accent" (click)="downloadCurrentObject()"> <mat-icon>cloud_download</mat-icon> {{currentObject.data!=""?currentObject.data:currentObject.type}}</button>
+      <button mat-button color="primary" (click)="addObject()"> <mat-icon>library_add</mat-icon> add new {{currentObject.type}}<div *ngIf="currentObject.id!=null"> or Edit</div></button>
+      <button mat-button color="accent" [disabled]="currentObject.id=='' || currentObject.id==null" (click)="deleteObject()"><mat-icon>remove_circle_outline</mat-icon></button>
       
     </mat-card-actions>
   </mat-card>

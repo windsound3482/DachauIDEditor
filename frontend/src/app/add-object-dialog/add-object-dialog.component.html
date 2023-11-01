@@ -1,9 +1,9 @@
 <div>
     <div mat-dialog-content>
-      <p>New {{title}}</p>
+      <h3>Do you want to add or edit or following {{title}}?</h3>
       <mat-form-field>
         <mat-label>ID(Optional)</mat-label>
-        <input matInput [(ngModel)]="id" (ngModelChange)="confirm=false">
+        <input matInput [(ngModel)]="id" type="number" min="0" (ngModelChange)="confirm=false">
       </mat-form-field>
       <mat-form-field>
         <mat-label>Type</mat-label>
