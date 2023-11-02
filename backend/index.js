@@ -81,7 +81,11 @@ function addOrSelectObject_forced(id,type,data,res) {
             console.error(error.message);
           }
           console.log(`Inserted a Object [${id},${type},${data}] with the ID: ${this.lastID}`);
-          res.send({'id':this.lastID,'data':type,'error':false,'Msg':`Inserted a Object [${id},${type},${data}] with the ID: ${this.lastID}`});
+          res.send({'id':this.lastID,'data':{
+            type:type,
+            id:id,
+            data:data
+            },'error':false,'Msg':`Inserted a Object [${id},${type},${data}] with the ID: ${this.lastID}`});
         }
       );
   }
@@ -95,7 +99,11 @@ function addOrSelectObject_forced(id,type,data,res) {
             console.error(error.message);
           }
           console.log(`Inserted a Object [${id},${type},${data}] with the ID: ${this.lastID}`);
-          res.send({'id':this.lastID,'data':type,'error':false,'Msg':`Inserted a Object [${id},${type},${data}] with the ID: ${this.lastID}`});
+          res.send({'id':this.lastID,'data':{
+            type:type,
+            id:this.lastID,
+            data:data
+            },'error':false,'Msg':`Inserted a Object [${id},${type},${data}] with the ID: ${this.lastID}`});
         }
       );
   }
@@ -186,7 +194,7 @@ function addOrSelectRelation(aid,relation,bid,res) {
   db.all(`
     SELECT * 
     FROM relations
-    where aid=`+aid+ ` and bid=`+bid, (error, row) => {
+    where (aid=`+aid+ ` and bid=`+bid+ `) or (bid=`+aid+ ` and aid=`+bid+ `)`, (error, row) => {
     if (error) {
       throw new Error(error.message);
     }
@@ -222,12 +230,67 @@ function addOrSelectRelation_forced(aid,relation,bid,res){
   );
 }
 
+function deleteRelation(id,res){
+  db.run(`
+  Delete from relations where id=`+id,
+  function (error) {
+    if (error) {
+      console.error(error.message);
+    }
+    console.log(`Delete a Relation with the ID: ${id}`);
+    res.send({'error':false,'Msg':`Delete a Relation with the ID: ${id}`});
+  }
+  );
+}
+
+function deleteObject(id,type,res) {
+  db.run(`
+    Delete from objects where id=`+id,
+    function (error) {
+      if (error) {
+        console.error(error.message);
+      }
+      console.log(`Delete a Object [${id},${type}]`);
+      db.run(`
+        Delete from relations where aid=`+id+` or bid=`+id,
+        function (error) {
+          if (error) {
+            console.error(error.message);
+          }
+          db.all(`
+            SELECT * 
+            FROM objects 
+            where type='`+type+`'`, (error, row) => {
+            if (error) {
+              throw new Error(error.message);
+            }
+            if (row.length==0){
+              res.send({'data':{
+                type:"Person",
+                data:"",
+                id:null
+                },'error':false,'Msg':`A Object [${id},${type}] and all the related relations are deleted`});
+            }
+            else{
+              res.send({'data':{
+                type:type,
+                data:"",
+                id:null
+              },'error':false,'Msg':`A Object [${id},${type}] and all the related relations are deleted`});
+            }
+          });
+          
+        }
+      );
+    }
+  );
+}
 
 
 app.post('/api/Objects', function(req, res) {
   console.log('receiving data ...');
   console.log('body is ',req.body);
-  if (req.body['id']!=null){
+  if (req.body['id']!=null && req.body['id']!=""){
     selectObjectsWithId(req.body['id'],res)
   }
   else{
@@ -244,7 +307,7 @@ app.post('/api/Objects/addOrGetObject', function(req, res) {
     addOrSelectObject_forced(req.body['id'],req.body['type'],req.body['value'],res)
   }
   else{
-    if (req.body['id']==null){
+    if (req.body['id']==null || req.body['id']==''){
       addOrSelectObject(req.body['type'],req.body['value'],res);
     }
     else{
@@ -257,18 +320,7 @@ app.post('/api/Objects/addOrGetObject', function(req, res) {
 app.post('/api/Objects/deleteObject', function(req, res) {
   console.log('AddOrGetObject: receiving data ...');
   console.log('body is ',req.body);
-  if (req.body['forced']==true){
-    addOrSelectObject_forced(req.body['id'],req.body['type'],req.body['value'],res)
-  }
-  else{
-    if (req.body['id']==null){
-      addOrSelectObject(req.body['type'],req.body['value'],res);
-    }
-    else{
-      addOrSelectObjectWithID(req.body['id'],req.body['type'],req.body['value'],res);
-    }
-  }
-  
+  deleteObject(req.body['id'],req.body['type'],res)
 });
 
 
@@ -281,6 +333,12 @@ app.post('/api/Relations/addOrGetRelation', function(req, res) {
   else
     addOrSelectRelation(req.body['aid'],req.body['relation'],req.body['bid'],res);
  
+});
+
+app.post('/api/Relations/deleteRelation', function(req, res) {
+  console.log('receiving data ...');
+  console.log('body is ',req.body);
+  deleteRelation(req.body['id'],res)
 });
 
 app.get('/api/Types', function (req, res) {
