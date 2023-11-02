@@ -329,7 +329,7 @@ app.post('/api/Relations/addOrGetRelation', function(req, res) {
   console.log('receiving data ...');
   console.log('body is ',req.body);
   if (req.body['forced']==true){
-    addOrSelectRelation_forced(req.body['id'],req.body['type'],req.body['value'],res)
+    addOrSelectRelation_forced(req.body['aid'],req.body['relation'],req.body['bid'],res)
   }
   else
     addOrSelectRelation(req.body['aid'],req.body['relation'],req.body['bid'],res);
