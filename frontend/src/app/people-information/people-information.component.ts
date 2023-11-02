@@ -26,7 +26,7 @@ export class PeopleInformationComponent  {
       private fileservice:FileserverService
     ) { }
   typeControlValue=new FormControl('Person');
-  NotPropertyList=['Person']
+  NotPropertyList=['Person','Picture']
   prevMatSelectValue:any='Person'
 
   addObject(){

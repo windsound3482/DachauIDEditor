@@ -29,6 +29,10 @@
         class="node"
         (dblclick)="onNodeClick(node)"
         (contextmenu)="onNodeRightClick(node)"
+        ngx-tooltip
+        [tooltipTitle]="  (node.type=='Picture'?('<img  width=\'300\' src=\'api/multimedia/img/'+node.label+'\' alt=\' ' +node.label +' \' >'):node.label)"
+        
+ 
       >
         <svg:rect
           [attr.width]="node.dimension.width"
@@ -42,6 +46,9 @@
         </svg:text>
       </svg:g>
     </ng-template>
+
+
+    
 
     <ng-template #linkTemplate let-link>
       <svg:g class="edge"
@@ -62,4 +69,8 @@
     </ng-template>
   </ngx-graph>
 </div>
+
+
+
+
 

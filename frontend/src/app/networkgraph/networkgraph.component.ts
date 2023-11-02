@@ -1,4 +1,4 @@
-import { Component ,Input,Output, EventEmitter} from '@angular/core';
+import { Component ,Input,Output, EventEmitter,ViewChild,TemplateRef} from '@angular/core';
 import { DatabaseService } from '../database.service';
 import { NetworkgraphService } from '../networkgraph.service';
 import { ComfirmDeleteObjectDialogComponent } from '../comfirm-delete-object-dialog/comfirm-delete-object-dialog.component';
@@ -22,6 +22,7 @@ export class NetworkgraphComponent {
   nodes=[]
   links=[]
   currentObject={type:"Person",id:null,data:""}
+
   @Input() set refreshWithType(data:any){
     this.refreshTheGraph(data);
     this.currentObject=data;

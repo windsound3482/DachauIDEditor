@@ -21,6 +21,7 @@ import { FileUploadComponent } from './file-upload/file-upload.component';
 import {MatTabsModule} from '@angular/material/tabs';
 import { NetworkgraphComponent } from './networkgraph/networkgraph.component';
 import { NgxGraphModule } from '@swimlane/ngx-graph';
+import { NgxChartsModule } from '@swimlane/ngx-charts';
 import {MatSnackBarModule} from '@angular/material/snack-bar';
 import {MatDialogModule} from '@angular/material/dialog';
 import { AddObjectDialogComponent } from './add-object-dialog/add-object-dialog.component';
@@ -58,6 +59,7 @@ import { ConfirmDeleteRelationDialogComponent } from './confirm-delete-relation-
     MatCardModule,
     MatTabsModule,
     NgxGraphModule,
+    NgxChartsModule,
     MatSnackBarModule,
     MatDialogModule,MatSelectModule,ReactiveFormsModule
   ],

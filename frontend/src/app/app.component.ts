@@ -29,6 +29,16 @@ export class AppComponent implements OnInit, AfterViewInit {
       this.typelist=data;
     })
   }
+
+  switchObject(){
+    let tempObject2=Object.assign(this.leftObject)
+    this.leftObject=Object.assign(this.rightObject)
+    this.rightObject=tempObject2
+    let tempObject=Object.assign(this.components.first.currentObject)
+    this.components.first.currentObjectChange(Object.assign(this.components.last.currentObject))
+    this.components.last.currentObjectChange(tempObject)
+    
+  }
   
 
 

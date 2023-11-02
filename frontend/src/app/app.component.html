@@ -10,8 +10,12 @@
     </div>
   </div>
 
-  <br style="clear:both"/>
-  
+
+
+  <div style="text-align: center; ">
+    <button mat-button color="primary"  (click)="switchObject()"><mat-icon>compare_arrows</mat-icon></button>
+    
+  </div>
   <app-relation-handler [refreshaObject]="leftObject" [refreshbObject]="rightObject" (onChange)="relationRefresh()"></app-relation-handler>
 
 </div>
