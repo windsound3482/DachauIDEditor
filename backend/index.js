@@ -1,4 +1,5 @@
 const express = require('express')
+var fs = require('fs')
 const app = express()
 const sqlite3 = require("sqlite3").verbose();
 const filepath = "./dachau.db";
@@ -345,6 +346,16 @@ app.get('/api/Types', function (req, res) {
   //res.header("Access-Control-Allow-Origin", "*");
   selectTypes(res);
 });
+
+app.get('/api/multimedia/img/*', function (req, res) {
+  //res.header("Access-Control-Allow-Origin", "*");
+  fs.readFile('multimedia/img/'+req.params[0], function(err, data) {
+    if (err) throw err // Fail if the file can't be read.
+      res.writeHead(200, {'Content-Type': 'image/jpeg'})
+      res.end(data)})
+});
+
+
 
 
 
