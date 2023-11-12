@@ -3,13 +3,25 @@
       <mat-card-title>
         <mat-form-field >
           <mat-select [formControl]="typeControlValue" (openedChange)="onMatSelectOpen($event)" (selectionChange)="typeControl($event)">
-            <div *ngFor="let type of NotPropertyList" >
-              <mat-option [value]="type">{{type}}</mat-option>
-            </div>
+            <mat-optgroup label="Individual" >
+              <div *ngFor="let type of NotPropertyList" >
+                <mat-option *ngIf="typelistcontains(type)" [value]="type">
+                  {{type}}
+                </mat-option>
+              </div>
+            </mat-optgroup>
+            
+            <mat-optgroup label="MultiMedia" >
+              <div *ngFor="let type of MultiMediaList" >
+                <mat-option *ngIf="typelistcontains(type)" [value]="type">
+                  {{type}}
+                </mat-option>
+              </div>
+            </mat-optgroup>
             
             <mat-optgroup label="Property">
               <div *ngFor="let type of typeList" >
-                <mat-option *ngIf="!NotPropertyList.includes(type.type)" [value]="type.type">
+                <mat-option *ngIf="!NotPropertyList.includes(type.type) && !MultiMediaList.includes(type.type)" [value]="type.type">
                   {{type.type}}
                 </mat-option>
               </div>
@@ -28,7 +40,10 @@
     </mat-card-content>
     <mat-card-actions>
       <button mat-button color="accent" (click)="downloadCurrentObject()"> <mat-icon>cloud_download</mat-icon> {{currentObject.data!=""?currentObject.data:currentObject.type}}</button>
-      <button mat-button color="primary" (click)="addObject()"> <mat-icon>library_add</mat-icon> add new {{currentObject.type}}<div *ngIf="currentObject.id!=null"> or Edit</div></button>
+      <button mat-button color="primary" *ngIf="!multiMediaListContains()" (click)="addObject()"> <mat-icon>library_add</mat-icon> add new {{currentObject.type}}<div *ngIf="currentObject.id!=null"> or Edit</div></button>
+      <input #multimediaInput hidden="true" type="file" class="file-upload" (change)="uploadMultiMedia($event.target)">
+      <button mat-flat-button color="primary" *ngIf="multiMediaListContains()" (click)="multimediaInput.click()"><mat-icon>attach_file</mat-icon> add new {{currentObject.type}} </button>
+
       <button mat-button color="accent" [disabled]="currentObject.id=='' || currentObject.id==null" (click)="deleteObject()"><mat-icon>remove_circle_outline</mat-icon></button>
       
     </mat-card-actions>

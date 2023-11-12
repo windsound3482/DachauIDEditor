@@ -26,7 +26,9 @@ export class PeopleInformationComponent  {
       private fileservice:FileserverService
     ) { }
   typeControlValue=new FormControl('Person');
-  NotPropertyList=['Person','Picture']
+  NotPropertyList=['Person']
+  MultiMediaList=['Picture']
+  
   prevMatSelectValue:any='Person'
 
   addObject(){
@@ -117,6 +119,37 @@ export class PeopleInformationComponent  {
       nodes:this.networkComponent.nodes,
       links:this.networkComponent.links
     }),filename)
+  }
+
+  typelistcontains(type:any){
+    return this.typeList.some(e => e.type === type)
+  }
+
+  multiMediaListContains(){
+    return this.MultiMediaList.includes(this.typeControlValue.value as string)
+  }
+
+  uploadMultiMedia(file:any){
+    let fileReader = new FileReader();
+    fileReader.onload = (e) => {
+      const dialogRef = this.dialog.open(AddObjectDialogComponent);
+      let instance = dialogRef.componentInstance;
+      instance.id=null;
+      instance.name = file.files[0].name;
+      instance.type = this.currentObject.type;
+      instance.title = this.currentObject.type;
+      instance.multimedia=true;
+      instance.valueEditDisabled=true;
+      instance.multiMediaFile=fileReader.result as string;
+      dialogRef.afterClosed().subscribe(result => {
+        if (result!=null){
+          console.log(result)
+          this.currentObjectChange(result.data)
+        }
+      });
+    }
+    fileReader.readAsDataURL(file.files[0]);
+    
   }
 
 

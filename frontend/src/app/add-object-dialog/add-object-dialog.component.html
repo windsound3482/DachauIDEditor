@@ -3,15 +3,20 @@
       <h3>Do you want to add or edit or following {{title}}?</h3>
       <mat-form-field>
         <mat-label>ID(Optional)</mat-label>
-        <input matInput [(ngModel)]="id" type="number" min="0" (ngModelChange)="confirm=false">
+        <input matInput [(ngModel)]="id" type="number" min="0" (ngModelChange)="confirm=false" [disabled]="multimedia">
       </mat-form-field>
       <mat-form-field>
         <mat-label>Type</mat-label>
         <input matInput [(ngModel)]="type" (ngModelChange)="confirm=false" [disabled]="typeEditDisabled==true">
       </mat-form-field>
+      <mat-form-field *ngIf="multimedia">
+        <mat-label>Path</mat-label>
+        <input matInput [(ngModel)]="path" (ngModelChange)="confirm=false">
+        <span matTextSuffix>/</span>
+      </mat-form-field>
       <mat-form-field>
         <mat-label>Value</mat-label>
-        <input matInput [(ngModel)]="name" (ngModelChange)="confirm=false">
+        <input matInput [(ngModel)]="name" (ngModelChange)="confirm=false" [disabled]="valueEditDisabled==true">
       </mat-form-field>
     </div>
     <div mat-dialog-actions>

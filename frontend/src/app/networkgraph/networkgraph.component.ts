@@ -81,6 +81,12 @@ export class NetworkgraphComponent {
     });
 
   }
+  tooltip(node:any){
+    if (node.type=='Picture'){
+      return '<img  width=\'300\' src=\'api/multimedia/'+node.type+'/'+node.label+'\' alt=\' ' +node.label +' \' >'
+    }
+    return node.label
+  }
 }
 
 

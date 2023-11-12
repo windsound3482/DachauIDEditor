@@ -19,24 +19,36 @@ export class AddObjectDialogComponent {
   onNoClick(): void {
     this.dialogRef.close();
   }
+  path:string="";
   id:any=null;
   name:string="";
   type:string="";
   typeEditDisabled=true;
   title:string="";
+  multimedia:boolean=false;
+  valueEditDisabled=false;
+  multiMediaFile:string="";
 
   confirm=false;
 
   OnApplyClick():void{
-    this.service.addObject(this.id,this.type,this.name).then((data) => {
-      if (data['error']){
-        this.confirm=true;
-      }
-      else{
+    if (this.multimedia==true){
+      this.service.addObject(this.id,this.type,this.path+'/'+this.name,true).then((data) => {
+        this.service.uploadFile(this.type+'/'+this.path,this.type+'/'+this.path+'/'+this.name,this.multiMediaFile)
         this.dialogRef.close({data:data.data});
-      }
-      this._snackBar.open(data['Msg'], "close");
-    });
+      });
+    }
+    else{
+      this.service.addObject(this.id,this.type,this.name).then((data) => {
+        if (data['error']){
+          this.confirm=true;
+        }
+        else{
+          this.dialogRef.close({data:data.data});
+        }
+        this._snackBar.open(data['Msg'], "close");
+      });
+    }
   }
 
   OnConfirmClick():void{

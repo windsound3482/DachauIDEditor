@@ -30,7 +30,7 @@
         (dblclick)="onNodeClick(node)"
         (contextmenu)="onNodeRightClick(node)"
         ngx-tooltip
-        [tooltipTitle]="  (node.type=='Picture'?('<img  width=\'300\' src=\'api/multimedia/img/'+node.label+'\' alt=\' ' +node.label +' \' >'):node.label)"
+        [tooltipTitle]="tooltip(node) "
         
  
       >
