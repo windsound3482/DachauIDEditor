@@ -4,6 +4,7 @@ import {FormControl} from '@angular/forms'
 import { AddObjectDialogComponent } from '../add-object-dialog/add-object-dialog.component';
 import { ComfirmDeleteObjectDialogComponent } from '../comfirm-delete-object-dialog/comfirm-delete-object-dialog.component';
 import { NetworkgraphComponent } from '../networkgraph/networkgraph.component';
+import  {MultiMediaList} from '../parameter';
 import { FileserverService } from '../fileserver.service';
 @Component({
   selector: 'app-people-information',
@@ -17,7 +18,8 @@ export class PeopleInformationComponent  {
   @Output() onChangeObject = new EventEmitter<any>();
   @ViewChild(NetworkgraphComponent) 
   private networkComponent!: NetworkgraphComponent;
-
+  
+  MultiMediaList=MultiMediaList
   
 
   currentObject={type:"Person",id:null,data:""}
@@ -27,7 +29,6 @@ export class PeopleInformationComponent  {
     ) { }
   typeControlValue=new FormControl('Person');
   NotPropertyList=['Person']
-  MultiMediaList=['Picture']
   
   prevMatSelectValue:any='Person'
 
@@ -126,7 +127,7 @@ export class PeopleInformationComponent  {
   }
 
   multiMediaListContains(){
-    return this.MultiMediaList.includes(this.typeControlValue.value as string)
+    return MultiMediaList.includes(this.typeControlValue.value as string)
   }
 
   uploadMultiMedia(file:any){
@@ -152,7 +153,7 @@ export class PeopleInformationComponent  {
     
   }
 
-
   
+
 
 }

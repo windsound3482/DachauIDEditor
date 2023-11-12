@@ -27,10 +27,11 @@
     <ng-template #nodeTemplate let-node>
       <svg:g
         class="node"
-        (dblclick)="onNodeClick(node)"
+        (click)="onNodeClick(node)"
         (contextmenu)="onNodeRightClick(node)"
         ngx-tooltip
         [tooltipTitle]="tooltip(node) "
+        (dblclick)="openFile(node)"
         
  
       >

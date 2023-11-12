@@ -31,6 +31,7 @@
         </mat-form-field>
         <button mat-button color="primary" (click)="refreshType()"><mat-icon>refresh</mat-icon></button>
         {{currentObject.data}}
+        
       </mat-card-title>
     </mat-card-header>
     <mat-card-content>
@@ -42,7 +43,7 @@
       <button mat-button color="accent" (click)="downloadCurrentObject()"> <mat-icon>cloud_download</mat-icon> {{currentObject.data!=""?currentObject.data:currentObject.type}}</button>
       <button mat-button color="primary" *ngIf="!multiMediaListContains()" (click)="addObject()"> <mat-icon>library_add</mat-icon> add new {{currentObject.type}}<div *ngIf="currentObject.id!=null"> or Edit</div></button>
       <input #multimediaInput hidden="true" type="file" class="file-upload" (change)="uploadMultiMedia($event.target)">
-      <button mat-flat-button color="primary" *ngIf="multiMediaListContains()" (click)="multimediaInput.click()"><mat-icon>attach_file</mat-icon> add new {{currentObject.type}} </button>
+      <button mat-button color="primary" *ngIf="multiMediaListContains()" (click)="multimediaInput.click()"><mat-icon>attach_file</mat-icon> add new {{currentObject.type}} </button>
 
       <button mat-button color="accent" [disabled]="currentObject.id=='' || currentObject.id==null" (click)="deleteObject()"><mat-icon>remove_circle_outline</mat-icon></button>
       

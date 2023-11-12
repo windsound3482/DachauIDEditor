@@ -4,6 +4,7 @@ import { NetworkgraphService } from '../networkgraph.service';
 import { ComfirmDeleteObjectDialogComponent } from '../comfirm-delete-object-dialog/comfirm-delete-object-dialog.component';
 import { ConfirmDeleteRelationDialogComponent } from '../confirm-delete-relation-dialog/confirm-delete-relation-dialog.component';
 import {MatDialog} from '@angular/material/dialog';
+import { MultiMediaList } from '../parameter';
 
 
 
@@ -85,7 +86,13 @@ export class NetworkgraphComponent {
     if (node.type=='Picture'){
       return '<img  width=\'300\' src=\'api/multimedia/'+node.type+'/'+node.label+'\' alt=\' ' +node.label +' \' >'
     }
+    
     return node.label
+  }
+
+  openFile(node:any){
+    if (MultiMediaList.includes(node.type))
+      window.open('api/multimedia/'+node.type+'/'+node.label)
   }
 }
 
