@@ -347,13 +347,25 @@ app.get('/api/Types', function (req, res) {
   selectTypes(res);
 });
 
-app.get('/api/multimedia/img/*', function (req, res) {
+app.get('/api/multimedia/*', function (req, res) {
   //res.header("Access-Control-Allow-Origin", "*");
-  fs.readFile('multimedia/img/'+req.params[0], function(err, data) {
+  fs.readFile('multimedia/'+req.params[0], function(err, data) {
     if (err) throw err // Fail if the file can't be read.
       res.writeHead(200, {'Content-Type': 'image/jpeg'})
       res.end(data)})
 });
+
+app.post('/api/multimedia/upload', function(req, res) {
+  console.log('receiving data ...');
+  console.log('body is ',req.body);
+  fs.mkdirSync('multimedia/'+req.body['path'], { recursive: true })
+  let base64Image = req.body['fileData'].split(';base64,').pop();
+  fs.writeFileSync('multimedia/'+req.body['name'], base64Image, {encoding: 'base64'}, function(err) {
+    console.log('File created');
+});
+});
+
+
 
 
 
