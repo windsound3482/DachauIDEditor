@@ -72,7 +72,7 @@ function addOrSelectObjectWithID(id,type,data,res) {
 }
 
 function addOrSelectObject_forced(id,type,data,res) {
-  if (id!=null){
+  if (id!=null && id!=""){
     db.run(`
         INSERT or replace INTO objects (id,type, data)
         VALUES (?, ?, ?)`,
@@ -192,27 +192,41 @@ function selectObjectsWithId(id,res) {
 }
 
 function addOrSelectRelation(aid,relation,bid,res) {
-  db.all(`
-    SELECT * 
-    FROM relations
-    where (aid=`+aid+ ` and bid=`+bid+ `) or (bid=`+aid+ ` and aid=`+bid+ `)`, (error, row) => {
-    if (error) {
-      throw new Error(error.message);
-    }
-    if (row.length==0){
-      addOrSelectRelation_forced(aid,relation,bid,res);
+  db.all(`SELECT * FROM objects where objects.id=${aid} or objects.id=${bid}`,(err,row)=>{
+    if (row.length==2){
+      db.all(`
+        SELECT * 
+        FROM relations
+        where (aid=`+aid+ ` and bid=`+bid+ `) or (bid=`+aid+ ` and aid=`+bid+ `)`, (error, row) => {
+        if (error) {
+          throw new Error(error.message);
+        }
+        if (row.length==0){
+          addOrSelectRelation_forced(aid,relation,bid,res);
+        }
+        else{
+          let existedRls="["
+          console.log('Existed items:'+row)
+          row.forEach((object)=>{
+            existedRls=existedRls+object['relation'].toString()+',';
+          });
+          existedRls=existedRls+']'
+          console.log(`Following Relations between aid and bid existed:${existedRls}`);
+          res.send({'duplicatedRls':row,'error':true,'Msg':`Following Relations between aid and bid existed:${existedRls}`});
+        }
+      });
     }
     else{
-      let existedRls="["
-      console.log('Existed items:'+row)
-      row.forEach((object)=>{
-        existedRls=existedRls+object['relation'].toString()+',';
-      });
-      existedRls=existedRls+']'
-      console.log(`Following Relations between aid and bid existed:${existedRls}`);
-      res.send({'duplicatedRls':row,'error':true,'Msg':`Following Relations between aid and bid existed:${existedRls}`});
+      if (row.length==0)
+        res.send({'error':true,'Msg':`Objects with ${aid} and ${bid} both do not existed`});
+      else
+      if (row[0].id==aid)
+        res.send({'error':true,'Msg':`Object with ${bid} does not existed`});
+      else
+        res.send({'error':true,'Msg':`Object with ${aid} does not existed`});
     }
-  });
+  })
+  
   
 }
 
@@ -347,11 +361,19 @@ app.get('/api/Types', function (req, res) {
   selectTypes(res);
 });
 
-app.get('/api/multimedia/*', function (req, res) {
+app.get('/api/multimedia/Picture/*', function (req, res) {
   //res.header("Access-Control-Allow-Origin", "*");
-  fs.readFile('multimedia/'+req.params[0], function(err, data) {
+  fs.readFile('multimedia/Picture/'+req.params[0], function(err, data) {
     if (err) throw err // Fail if the file can't be read.
       res.writeHead(200, {'Content-Type': 'image/jpeg'})
+      res.end(data)})
+});
+
+app.get('/api/multimedia/pdf/*', function (req, res) {
+  //res.header("Access-Control-Allow-Origin", "*");
+  fs.readFile('multimedia/pdf/'+req.params[0], function(err, data) {
+    if (err) throw err // Fail if the file can't be read.
+      res.writeHead(200, {'Content-Type': 'application/pdf'})
       res.end(data)})
 });
 
