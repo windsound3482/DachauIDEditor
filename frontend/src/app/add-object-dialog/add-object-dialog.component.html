@@ -7,7 +7,7 @@
       </mat-form-field>
       <mat-form-field>
         <mat-label>Type</mat-label>
-        <input matInput [(ngModel)]="type" (ngModelChange)="confirm=false" [disabled]="typeEditDisabled==true">
+        <input matInput [(ngModel)]="type" (ngModelChange)="confirm=false" [disabled]="typeEditDisabled==true" required>
       </mat-form-field>
       <mat-form-field *ngIf="multimedia">
         <mat-label>Path</mat-label>
@@ -16,10 +16,10 @@
       </mat-form-field>
       <mat-form-field>
         <mat-label>Value</mat-label>
-        <input matInput [(ngModel)]="name" (ngModelChange)="confirm=false" [disabled]="valueEditDisabled==true">
+        <input matInput [(ngModel)]="name" (ngModelChange)="confirm=false" [disabled]="valueEditDisabled==true" required>
       </mat-form-field>
     </div>
-    <div mat-dialog-actions>
+    <div mat-dialog-actions >
       <button mat-button (click)="onNoClick()">Cancel</button>
       <button mat-button (click)="OnApplyClick()" cdkFocusInitial [disabled]="inputCheck()">Apply</button>
       <button mat-button (click)="OnConfirmClick()" *ngIf="confirm" [disabled]="inputCheck()">Confirm</button>

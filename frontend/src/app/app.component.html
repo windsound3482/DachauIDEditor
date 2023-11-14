@@ -10,10 +10,17 @@
     </div>
   </div>
 
+  <div >
+    
+    <input #FileInput hidden="true" type="file" class="file-upload" (change)="uploadFile($event.target)">
+    <button mat-button color="primary" (click)="FileInput.click()"><mat-icon>attach_file</mat-icon> Upload Multi Objects</button>
+    <input #RelaFileInput hidden="true" type="file" class="file-upload" (change)="uploadRelaFile($event.target)">
+    <button mat-button color="primary" (click)="RelaFileInput.click()"><mat-icon>attach_file</mat-icon> Upload Multi Relations</button>
+  
+  
+    <button mat-button color="primary" style="margin: 0 auto;" (click)="switchObject()"><mat-icon>compare_arrows</mat-icon></button>
 
-
-  <div style="text-align: center; ">
-    <button mat-button color="primary"  (click)="switchObject()"><mat-icon>compare_arrows</mat-icon></button>
+    
     
   </div>
   <app-relation-handler [refreshaObject]="leftObject" [refreshbObject]="rightObject" (onChange)="relationRefresh()"></app-relation-handler>

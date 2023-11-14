@@ -5,7 +5,8 @@ import { AddObjectDialogComponent } from '../add-object-dialog/add-object-dialog
 import { ComfirmDeleteObjectDialogComponent } from '../comfirm-delete-object-dialog/comfirm-delete-object-dialog.component';
 import { NetworkgraphComponent } from '../networkgraph/networkgraph.component';
 import  {MultiMediaList} from '../parameter';
-import { FileserverService } from '../fileserver.service';
+import { NetworkgraphService } from '../networkgraph.service';
+import { CSVService } from '../csv.service';
 @Component({
   selector: 'app-people-information',
   templateUrl: './people-information.component.html',
@@ -25,7 +26,8 @@ export class PeopleInformationComponent  {
   currentObject={type:"Person",id:null,data:""}
   constructor(
       public dialog: MatDialog,
-      private fileservice:FileserverService
+      private netService: NetworkgraphService,
+      private csvService:CSVService
     ) { }
   typeControlValue=new FormControl('Person');
   NotPropertyList=['Person']
@@ -111,15 +113,21 @@ export class PeopleInformationComponent  {
   }
 
   downloadCurrentObject(){
-    let filename=".json"
+    let filename=".txt"
     if (this.currentObject.data!="")
       filename=this.currentObject.data+filename
     else
       filename=this.currentObject.type+filename
-    this.fileservice.downloadFile(JSON.stringify({
-      nodes:this.networkComponent.nodes,
-      links:this.networkComponent.links
-    }),filename)
+    let outputNodes=JSON.parse(JSON.stringify(this.networkComponent.nodes))
+    let outputLinks=JSON.parse(JSON.stringify(this.networkComponent.links))
+    this.netService.outputData(outputNodes,outputLinks,this.graphID)
+    this.csvService.jsonToCSV(outputNodes,"Object_"+filename)
+    this.csvService.jsonToCSV(outputLinks,"Relation_"+filename)
+    
+    // this.fileservice.downloadFile(JSON.stringify({
+    //   nodes:this.networkComponent.nodes,
+    //   links:this.networkComponent.links
+    // }),filename)
   }
 
   typelistcontains(type:any){
@@ -150,6 +158,7 @@ export class PeopleInformationComponent  {
       });
     }
     fileReader.readAsDataURL(file.files[0]);
+    file.value='';
     
   }
 

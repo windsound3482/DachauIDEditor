@@ -1,9 +1,11 @@
 <div class='networkgraph'>
-  <ngx-graph
+  
+  <ngx-graph #RelationGraph
     class="chart-container"
     [links]="links"
     [nodes]="nodes"
     layout="dagre"
+    [showMiniMap]="true"
     
   >
     <ng-template #defsTemplate>
@@ -69,7 +71,9 @@
       </svg:g>
     </ng-template>
   </ngx-graph>
+  <button mat-button color="primary" (click)="RelationGraph.zoomToFit();RelationGraph.center()"><mat-icon> zoom_out_map</mat-icon></button>
 </div>
+
 
 
 

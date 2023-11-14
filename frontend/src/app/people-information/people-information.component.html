@@ -39,7 +39,7 @@
         <app-networkgraph [graphID]="graphID" [refreshWithType]="currentObject" (nodeChanged)="currentObjectChange($event)"></app-networkgraph>
       </div>
     </mat-card-content>
-    <mat-card-actions>
+    <mat-card-actions align="end">
       <button mat-button color="accent" (click)="downloadCurrentObject()"> <mat-icon>cloud_download</mat-icon> {{currentObject.data!=""?currentObject.data:currentObject.type}}</button>
       <button mat-button color="primary" *ngIf="!multiMediaListContains()" (click)="addObject()"> <mat-icon>library_add</mat-icon> add new {{currentObject.type}}<div *ngIf="currentObject.id!=null"> or Edit</div></button>
       <input #multimediaInput hidden="true" type="file" class="file-upload" (change)="uploadMultiMedia($event.target)">
