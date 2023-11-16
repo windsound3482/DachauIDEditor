@@ -1,5 +1,6 @@
 const express = require('express')
 var fs = require('fs')
+const Path = require("path");
 const app = express()
 const sqlite3 = require("sqlite3").verbose();
 const filepath = "./dachau.db";
@@ -376,6 +377,57 @@ app.get('/api/multimedia/pdf/*', function (req, res) {
       res.writeHead(200, {'Content-Type': 'application/pdf'})
       res.end(data)})
 });
+
+
+
+
+Files  = [];
+fileIndex=1;
+
+function ThroughDirectory(Directory,currentName) {
+  fs.readdirSync(Directory).forEach(File => {
+      const Absolute = Path.join(Directory, File);
+      this.fileIndex+=1
+      if (fs.statSync(Absolute).isDirectory()) 
+      {
+        console.log(this.Files)
+        this.Files.push({
+          id:this.fileIndex,
+          isFolder: true,
+          name: File,
+          parent: currentName
+        })
+        ThroughDirectory(Absolute,this.fileIndex)
+      }
+      else 
+        this.Files.push({
+          id:this.fileIndex,
+          isFolder: false,
+          name: File,
+          parent: currentName
+        })
+  });
+}
+
+app.post('/api/multimedia', function (req, res) {
+  console.log('receiving data ...');
+  console.log('body is ',req.body);
+  //res.header("Access-Control-Allow-Origin", "*");
+  this.Files = []
+  this.fileIndex=1
+  this.Files.push({
+    id:this.fileIndex,
+    isFolder: true,
+    name:req.body['type'] ,
+    parent: "root"
+  })
+  ThroughDirectory('multimedia/'+req.body['type'],this.fileIndex)
+  
+  console.log(this.Files)
+  res.send(this.Files)
+});
+
+
 
 app.post('/api/multimedia/upload', function(req, res) {
   console.log('receiving data ...');
