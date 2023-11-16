@@ -1,4 +1,9 @@
 .networkgraph {
     width: 48vw;
-    height: 66vh;
+    height:100%
+}
+
+.cardContext {
+    width: 48vw;
+    height:calc( 85vh - 150px )
 }

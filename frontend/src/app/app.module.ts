@@ -29,6 +29,10 @@ import { ComfirmDeleteObjectDialogComponent } from './comfirm-delete-object-dial
 import { ConfirmDeleteRelationDialogComponent } from './confirm-delete-relation-dialog/confirm-delete-relation-dialog.component';
 import { AddMultiObjectDialogComponent } from './add-multi-object-dialog/add-multi-object-dialog.component';
 import { AddMultiRelationDialogComponent } from './add-multi-relation-dialog/add-multi-relation-dialog.component';
+import { FileExplorerComponent } from './file-explorer/file-explorer.component';
+import { MatToolbarModule } from '@angular/material/toolbar';
+import {MatDividerModule} from '@angular/material/divider';
+
 
 
 
@@ -43,7 +47,8 @@ import { AddMultiRelationDialogComponent } from './add-multi-relation-dialog/add
     ComfirmDeleteObjectDialogComponent,
     ConfirmDeleteRelationDialogComponent,
     AddMultiObjectDialogComponent,
-    AddMultiRelationDialogComponent
+    AddMultiRelationDialogComponent,
+    FileExplorerComponent
   ],
   imports: [
     BrowserModule,
@@ -63,7 +68,9 @@ import { AddMultiRelationDialogComponent } from './add-multi-relation-dialog/add
     NgxGraphModule,
     NgxChartsModule,
     MatSnackBarModule,
-    MatDialogModule,MatSelectModule,ReactiveFormsModule
+    MatDialogModule,MatSelectModule,ReactiveFormsModule,
+    MatToolbarModule ,
+    MatDividerModule
   ],
   providers: [],
   bootstrap: [AppComponent]

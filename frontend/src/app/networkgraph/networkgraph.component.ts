@@ -6,6 +6,12 @@ import { ConfirmDeleteRelationDialogComponent } from '../confirm-delete-relation
 import {MatDialog} from '@angular/material/dialog';
 import { MultiMediaList } from '../parameter';
 
+export interface FileElement {
+  id?: string;
+  isFolder: boolean;
+  name: string;
+  parent: string;
+}
 
 
 @Component({
@@ -38,6 +44,13 @@ export class NetworkgraphComponent {
       
       this.links=data.links?Object.assign(data.links):null;
       console.log(this.nodes)
+      if (MultiMediaList.includes(object.type)){
+        this.service.getFileStructure(object.type).then((data) => {
+          this.map=data;
+          this.currentRoot=null;
+          this.updateFileElementQuery();
+        });
+      }
       
     });
   }
@@ -90,10 +103,80 @@ export class NetworkgraphComponent {
     return node.label
   }
 
+
+  //fileExplorer System
+
+  private map:FileElement[] = [];
+
+  currentRoot:any=null;
+  canNavigateUp = false;
+  public fileElements: FileElement[]=[];
+  currentPath: string=''
+
+  pushToPath(path: string, folderName: string) {
+    let p = path ? path : '';
+    p += `${folderName}/`;
+    return p;
+  }
+
+  popFromPath(path: string) {
+    let p = path ? path : '';
+    let split = p.split('/');
+    split.splice(split.length - 2, 1);
+    p = split.join('/');
+    return p;
+  }
+
+  queryInFolder(folderId: string) {
+    const result: FileElement[] = [];
+    this.map.forEach(element => {
+      if (element.parent === folderId) {
+        result.push(JSON.parse(JSON.stringify(element)));
+      }
+    });
+    return result;
+  }
+
+  
+  updateFileElementQuery() {
+    console.log(this.currentRoot)
+    this.fileElements = this.queryInFolder(this.currentRoot ? this.currentRoot.id : 'root');
+  }
+
+  navigateUp() {
+    console.log(this.currentPath)
+    if (this.currentRoot && this.currentRoot.parent === 'root') {
+      this.currentRoot = null;
+      this.canNavigateUp = false;
+      this.updateFileElementQuery();
+    } else {
+      this.currentRoot = this.map.find(o => o.id === this.currentRoot.parent);;
+      this.updateFileElementQuery();
+    }
+    
+    this.currentPath = this.popFromPath(this.currentPath);
+    
+  }
+
+  navigateToFolder(element: FileElement) {
+    this.currentRoot = element;
+    this.updateFileElementQuery();
+    this.currentPath = this.pushToPath(this.currentPath, element.name);
+    this.canNavigateUp = true;
+  }
+
+
   openFile(node:any){
     if (MultiMediaList.includes(node.type))
       window.open('api/multimedia/'+node.type+'/'+node.label)
   }
+
+  MultiMediaContains(){
+    return MultiMediaList.includes(this.currentObject.type)
+  }
+
+
+
 }
 
 

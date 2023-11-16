@@ -142,6 +142,7 @@ export class PeopleInformationComponent  {
     let fileReader = new FileReader();
     fileReader.onload = (e) => {
       const dialogRef = this.dialog.open(AddObjectDialogComponent);
+      console.log(e)
       let instance = dialogRef.componentInstance;
       instance.id=null;
       instance.name = file.files[0].name;
@@ -149,16 +150,17 @@ export class PeopleInformationComponent  {
       instance.title = this.currentObject.type;
       instance.multimedia=true;
       instance.valueEditDisabled=true;
-      instance.multiMediaFile=fileReader.result as string;
+      instance.multiMediaFile=fileReader.result as string; // transfer the multiMediaFile to the dialog
       dialogRef.afterClosed().subscribe(result => {
         if (result!=null){
           console.log(result)
           this.currentObjectChange(result.data)
         }
       });
+      file.value='';
     }
     fileReader.readAsDataURL(file.files[0]);
-    file.value='';
+    
     
   }
 

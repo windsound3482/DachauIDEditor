@@ -84,4 +84,8 @@ export class AppComponent implements OnInit, AfterViewInit {
     
   }
 
+  openNote($event:any) {
+    $event.preventDefault();
+  }
+
 }

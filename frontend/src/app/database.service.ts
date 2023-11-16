@@ -110,4 +110,17 @@ export class DatabaseService {
     return data;
   }
 
+  async getFileStructure(type:string){
+    const url: string = 'http://localhost:4200/api/multimedia';
+    let response = await fetch(url,{
+      method: 'POST',
+      body: JSON.stringify({
+        'type':type
+      }),
+      headers: { "Content-Type": "application/json" }
+    });
+    let data: any = await response.json();
+    return data;
+  }
+
 }
