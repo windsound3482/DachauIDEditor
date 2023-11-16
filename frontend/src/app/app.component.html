@@ -1,8 +1,8 @@
-<div class="parent">
+<div class="parent" (contextmenu)="openNote($event)">
   <div>
         
     <div class='Handler1'>
-        <app-people-information #card [graphID]="'Left'" [typeList]="typelist" (refreshTypeListEvent)="getTypeList()" (onChangeObject)="leftObject=$event;relationRefresh();"></app-people-information>
+        <app-people-information #card [graphID]="'Left'" [typeList]="typelist" (refreshTypeListEvent)="getTypeList()" (onChangeObject)="leftObject=$event;relationRefresh();" ></app-people-information>
         
     </div>
     <div class='Handler2'>
@@ -10,10 +10,17 @@
     </div>
   </div>
 
-
-
-  <div style="text-align: center; ">
-    <button mat-button color="primary"  (click)="switchObject()"><mat-icon>compare_arrows</mat-icon></button>
+  <div >
+    
+    <input #FileInput hidden="true" type="file" class="file-upload" (change)="uploadFile($event.target)">
+    <button mat-button color="primary" (click)="FileInput.click()"><mat-icon>attach_file</mat-icon> Upload Multi Objects</button>
+    <input #RelaFileInput hidden="true" type="file" class="file-upload" (change)="uploadRelaFile($event.target)">
+    <button mat-button color="primary" (click)="RelaFileInput.click()"><mat-icon>attach_file</mat-icon> Upload Multi Relations</button>
+  
+     
+    <button mat-button color="primary" style="float:right;margin-right: 46.5vw;width: 6vw;" (click)="switchObject()"><mat-icon>compare_arrows</mat-icon></button>
+    
+    
     
   </div>
   <app-relation-handler [refreshaObject]="leftObject" [refreshbObject]="rightObject" (onChange)="relationRefresh()"></app-relation-handler>

@@ -1,0 +1,29 @@
+<div>
+    <div mat-dialog-content>
+      <h3>Do you want to add all the folling Entities?</h3>
+      <div *ngIf="uploadObjects.length>0">
+        <div class="panel panel-primary" *ngFor="let object of uploadObjects"
+            [ngStyle]="{'background-color': object.Msg == '' ? 'green' : (object.Msg == 'Ready'?  'yellow':'red')}">  
+            <mat-form-field>
+                <mat-label>ID</mat-label>
+                <input matInput [(ngModel)]="object.id" (ngModelChange)="confirm=false;object.Msg = 'Ready'" type="number" min="0" >
+            </mat-form-field>
+            <mat-form-field>
+                <mat-label>Type</mat-label>
+                <input matInput [(ngModel)]="object.type" (ngModelChange)="confirm=false;object.Msg = 'Ready'"  required>
+            </mat-form-field>
+            <mat-form-field>
+                <mat-label>Value</mat-label>
+                <input matInput [(ngModel)]="object.value" (ngModelChange)="confirm=false;object.Msg = 'Ready'"  required>
+            </mat-form-field>
+            {{object.Msg}}
+        </div>
+      </div>
+    </div>
+    <div mat-dialog-actions>
+      <button mat-button (click)="onNoClick()">Cancel</button>
+      <button mat-button (click)="OnApplyClick()" cdkFocusInitial *ngIf="!inputCheck()">Apply</button>
+      <button mat-button (click)="OnConfirmClick()" *ngIf="confirm">Confirm</button>
+      <button mat-button (click)="OnDownloadClick()">Download Result</button>
+    </div>
+</div>

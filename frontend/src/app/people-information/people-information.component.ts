@@ -4,7 +4,9 @@ import {FormControl} from '@angular/forms'
 import { AddObjectDialogComponent } from '../add-object-dialog/add-object-dialog.component';
 import { ComfirmDeleteObjectDialogComponent } from '../comfirm-delete-object-dialog/comfirm-delete-object-dialog.component';
 import { NetworkgraphComponent } from '../networkgraph/networkgraph.component';
-import { FileserverService } from '../fileserver.service';
+import  {MultiMediaList} from '../parameter';
+import { NetworkgraphService } from '../networkgraph.service';
+import { CSVService } from '../csv.service';
 @Component({
   selector: 'app-people-information',
   templateUrl: './people-information.component.html',
@@ -17,17 +19,18 @@ export class PeopleInformationComponent  {
   @Output() onChangeObject = new EventEmitter<any>();
   @ViewChild(NetworkgraphComponent) 
   private networkComponent!: NetworkgraphComponent;
-
+  
+  MultiMediaList=MultiMediaList
   
 
   currentObject={type:"Person",id:null,data:""}
   constructor(
       public dialog: MatDialog,
-      private fileservice:FileserverService
+      private netService: NetworkgraphService,
+      private csvService:CSVService
     ) { }
   typeControlValue=new FormControl('Person');
   NotPropertyList=['Person']
-  MultiMediaList=['Picture']
   
   prevMatSelectValue:any='Person'
 
@@ -110,15 +113,21 @@ export class PeopleInformationComponent  {
   }
 
   downloadCurrentObject(){
-    let filename=".json"
+    let filename=".txt"
     if (this.currentObject.data!="")
       filename=this.currentObject.data+filename
     else
       filename=this.currentObject.type+filename
-    this.fileservice.downloadFile(JSON.stringify({
-      nodes:this.networkComponent.nodes,
-      links:this.networkComponent.links
-    }),filename)
+    let outputNodes=JSON.parse(JSON.stringify(this.networkComponent.nodes))
+    let outputLinks=JSON.parse(JSON.stringify(this.networkComponent.links))
+    this.netService.outputData(outputNodes,outputLinks,this.graphID)
+    this.csvService.jsonToCSV(outputNodes,"Object_"+filename)
+    this.csvService.jsonToCSV(outputLinks,"Relation_"+filename)
+    
+    // this.fileservice.downloadFile(JSON.stringify({
+    //   nodes:this.networkComponent.nodes,
+    //   links:this.networkComponent.links
+    // }),filename)
   }
 
   typelistcontains(type:any){
@@ -126,13 +135,14 @@ export class PeopleInformationComponent  {
   }
 
   multiMediaListContains(){
-    return this.MultiMediaList.includes(this.typeControlValue.value as string)
+    return MultiMediaList.includes(this.typeControlValue.value as string)
   }
 
   uploadMultiMedia(file:any){
     let fileReader = new FileReader();
     fileReader.onload = (e) => {
       const dialogRef = this.dialog.open(AddObjectDialogComponent);
+      console.log(e)
       let instance = dialogRef.componentInstance;
       instance.id=null;
       instance.name = file.files[0].name;
@@ -140,19 +150,21 @@ export class PeopleInformationComponent  {
       instance.title = this.currentObject.type;
       instance.multimedia=true;
       instance.valueEditDisabled=true;
-      instance.multiMediaFile=fileReader.result as string;
+      instance.multiMediaFile=fileReader.result as string; // transfer the multiMediaFile to the dialog
       dialogRef.afterClosed().subscribe(result => {
         if (result!=null){
           console.log(result)
           this.currentObjectChange(result.data)
         }
       });
+      file.value='';
     }
     fileReader.readAsDataURL(file.files[0]);
     
+    
   }
 
-
   
+
 
 }

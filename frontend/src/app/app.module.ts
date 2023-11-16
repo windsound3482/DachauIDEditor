@@ -17,7 +17,6 @@ import {MatButtonModule} from '@angular/material/button';
 import {MatIconModule} from '@angular/material/icon';
 import {MatCardModule} from '@angular/material/card';
 import { PeopleInformationComponent } from './people-information/people-information.component';
-import { FileUploadComponent } from './file-upload/file-upload.component';
 import {MatTabsModule} from '@angular/material/tabs';
 import { NetworkgraphComponent } from './networkgraph/networkgraph.component';
 import { NgxGraphModule } from '@swimlane/ngx-graph';
@@ -28,6 +27,12 @@ import { AddObjectDialogComponent } from './add-object-dialog/add-object-dialog.
 import {MatSelectModule} from '@angular/material/select';
 import { ComfirmDeleteObjectDialogComponent } from './comfirm-delete-object-dialog/comfirm-delete-object-dialog.component';
 import { ConfirmDeleteRelationDialogComponent } from './confirm-delete-relation-dialog/confirm-delete-relation-dialog.component';
+import { AddMultiObjectDialogComponent } from './add-multi-object-dialog/add-multi-object-dialog.component';
+import { AddMultiRelationDialogComponent } from './add-multi-relation-dialog/add-multi-relation-dialog.component';
+import { FileExplorerComponent } from './file-explorer/file-explorer.component';
+import { MatToolbarModule } from '@angular/material/toolbar';
+import {MatDividerModule} from '@angular/material/divider';
+
 
 
 
@@ -37,11 +42,13 @@ import { ConfirmDeleteRelationDialogComponent } from './confirm-delete-relation-
     RelationHandlerComponent,
     MultimediaHandlerComponent,
     PeopleInformationComponent,
-    FileUploadComponent,
     NetworkgraphComponent,
     AddObjectDialogComponent,
     ComfirmDeleteObjectDialogComponent,
-    ConfirmDeleteRelationDialogComponent
+    ConfirmDeleteRelationDialogComponent,
+    AddMultiObjectDialogComponent,
+    AddMultiRelationDialogComponent,
+    FileExplorerComponent
   ],
   imports: [
     BrowserModule,
@@ -61,7 +68,9 @@ import { ConfirmDeleteRelationDialogComponent } from './confirm-delete-relation-
     NgxGraphModule,
     NgxChartsModule,
     MatSnackBarModule,
-    MatDialogModule,MatSelectModule,ReactiveFormsModule
+    MatDialogModule,MatSelectModule,ReactiveFormsModule,
+    MatToolbarModule ,
+    MatDividerModule
   ],
   providers: [],
   bootstrap: [AppComponent]

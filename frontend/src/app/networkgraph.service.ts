@@ -33,5 +33,27 @@ export class NetworkgraphService {
     });
     
   }
+
+  outputData(nodes:any,links:any,graphID:any){
+    nodes.map((node:any)=>{
+      node.id=node.id.split("Node"+graphID)[1],
+      node.type=node.type,
+      node.value=node.label
+      let listTodelete=['label','data','fontcolor','fontWeight','meta','dimension','position','transform']
+      listTodelete.forEach(e => delete node[e]);
+    })
+    
+    links.map((link:any)=>{
+      link.aid=link.source.split("Node"+graphID)[1],
+      link.relation=link.label,
+      link.bid=link.target.split("Node"+graphID)[1],
+      link.id=link.id.split("Link"+graphID)[1]
+      let listTodelete=['source','target','label','color']
+      listTodelete.forEach(e => delete link[e]);
+
+    })
+    
+
+  }
   
 }
