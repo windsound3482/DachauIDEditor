@@ -30,6 +30,9 @@ export class FileExplorerComponent {
 
   @Output() navigatedDown = new EventEmitter<FileElement>();
   @Output() navigatedUp = new EventEmitter();
+  @Output() checkoutFile = new EventEmitter<FileElement>();
+  @Output() deleteCurrentFile = new EventEmitter<FileElement>();
+  
 
   ngOnChanges(changes: SimpleChanges): void {}
 
@@ -38,10 +41,22 @@ export class FileExplorerComponent {
     if (element.isFolder) {
       this.navigatedDown.emit(element);
     }
+    else
+    {
+      this.checkoutFile.emit(element);
+    }
   }
 
   navigateUp() {
     this.navigatedUp.emit();
+  }
+
+  open(element: FileElement){
+    window.open('api/multimedia/'+this.path+element.name)
+  }
+
+  deleteFile(element: FileElement){
+    this.deleteCurrentFile.emit(element)
   }
 
 }

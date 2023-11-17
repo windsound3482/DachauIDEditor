@@ -24,6 +24,7 @@ export class AddObjectDialogComponent {
   name:string="";
   type:string="";
   typeEditDisabled=true;
+  PathEditDisabled:boolean=false;
   title:string="";
   multimedia:boolean=false;
   valueEditDisabled=false;
@@ -33,8 +34,9 @@ export class AddObjectDialogComponent {
 
   OnApplyClick():void{
     if (this.multimedia==true){
-      this.service.addObject(this.id,this.type,this.path+'/'+this.name,true).then((data) => {
-        this.service.uploadFile(this.type+'/'+this.path,this.type+'/'+this.path+'/'+this.name,this.multiMediaFile)
+      this.service.addObject(this.id,this.type,this.path+(this.path==""?'':'/')+this.name,true).then((data) => {
+        if (!this.PathEditDisabled)
+          this.service.uploadFile(this.type+'/'+this.path,this.type+'/'+this.path+'/'+this.name,this.multiMediaFile)
         this.dialogRef.close({data:data.data});
       });
     }
