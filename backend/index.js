@@ -16,7 +16,8 @@ app.use(cors({
   origin: '*'
 }));
 
-app.use(express.json());
+app.use(express.json({limit: '50mb'}));
+
 
 
 function addOrSelectObject(type,data,res) {
@@ -146,6 +147,18 @@ function selectObjectsWithType(type,res) {
     });
     
     
+  });
+}
+
+function selectObjectsWithValue(value,res) {
+  db.all(`SELECT o.id,o.data as data,o.type as type  FROM objects o where o.data='`+value+`'`, (error, nodes) => {
+    if (error) {
+      throw new Error(error.message);
+    }
+    if (nodes.length==0)
+      res.send({result:false});
+    else
+      res.send({node:nodes[0],result:true});
   });
 }
 
@@ -303,6 +316,8 @@ function deleteObject(id,type,res) {
 }
 
 
+
+
 app.post('/api/Objects', function(req, res) {
   console.log('receiving data ...');
   console.log('body is ',req.body);
@@ -313,7 +328,13 @@ app.post('/api/Objects', function(req, res) {
     if (req.body['type']!=null){
       selectObjectsWithType(req.body['type'],res)
     }
+    else{
+      if (req.body['value']!=null){
+        selectObjectsWithValue(req.body['value'],res)
+      } 
+    }
   }
+
 });
 
 app.post('/api/Objects/addOrGetObject', function(req, res) {
@@ -392,16 +413,16 @@ function ThroughDirectory(Directory,currentName) {
       {
         console.log(this.Files)
         this.Files.push({
-          id:this.fileIndex,
+          id:Absolute,
           isFolder: true,
           name: File,
           parent: currentName
         })
-        ThroughDirectory(Absolute,this.fileIndex)
+        ThroughDirectory(Absolute,Absolute)
       }
       else 
         this.Files.push({
-          id:this.fileIndex,
+          id:Absolute,
           isFolder: false,
           name: File,
           parent: currentName
@@ -416,14 +437,14 @@ app.post('/api/multimedia', function (req, res) {
   this.Files = []
   this.fileIndex=1
   this.Files.push({
-    id:this.fileIndex,
+    id:'multimedia/'+req.body['type'],
     isFolder: true,
     name:req.body['type'] ,
     parent: "root"
   })
-  ThroughDirectory('multimedia/'+req.body['type'],this.fileIndex)
+  ThroughDirectory('multimedia/'+req.body['type'],'multimedia/'+req.body['type'])
   
-  console.log(this.Files)
+
   res.send(this.Files)
 });
 
@@ -438,6 +459,24 @@ app.post('/api/multimedia/upload', function(req, res) {
     console.log('File created');
 });
 });
+
+app.post('/api/multimedia/delete', function(req, res) {
+  console.log('receiving data ...');
+  console.log('body is ',req.body);
+ 
+  fs.unlink('multimedia/'+req.body['name'],function(err){
+        if(err) return console.log(err);
+        res.send({'data':{
+        type:req.body['type'],
+        data:"",
+        id:null
+      },'error':false,'Msg':`A Object ${req.body['name']} is deleted`});
+        console.log('file deleted successfully');
+  });  
+
+});
+
+
 
 
 
