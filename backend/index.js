@@ -1,4 +1,5 @@
 const express = require('express')
+const pdftopic = require ("pdftopic");
 var fs = require('fs')
 const Path = require("path");
 const app = express()
@@ -6,6 +7,47 @@ const sqlite3 = require("sqlite3").verbose();
 const filepath = "./dachau.db";
 const port=80
 const cors = require('cors');
+const imageThumbnail = require('image-thumbnail');
+const streamtoarray = require('stream-to-array');
+const imagemagick = require("imagemagick-stream");
+const { exec } = require('child_process');
+
+//helpfunction imagemagickconverter
+const imagemagickconverter = async (pdf,type) => {
+  console.log(type)
+  const imagemagickstream = imagemagick()
+      .set('density', 200)
+      .set('strip')
+      .quality(90)
+      .set("background", "white")
+      .set("flatten");
+
+  const onError = imagemagickstream.onerror;
+
+  imagemagickstream.onerror = (err) => {
+      if (Buffer.isBuffer(err)) {
+          console.log(`Ignore the error in ImageMagick.:\n${err.toString()}`);
+          return;
+      }
+      console.log(`Error:\n${err} from ImageMagick`);
+      onError.apply(this, arguments);
+  };
+
+  imagemagickstream.input = `${type}:-[0]`;
+  imagemagickstream.output = 'png:-';
+
+  imagemagickstream.end(pdf);
+
+
+  const parts = await streamtoarray(imagemagickstream);
+  const buffers = parts.map(part => Buffer.isBuffer(part) ? part : Buffer.from(part));
+  const resultBuffer = Buffer.concat(buffers);
+
+
+  return resultBuffer;
+}
+
+
 const db= new sqlite3.Database(filepath, (error) => {
   if (error) {
     return console.error(error.message);
@@ -391,12 +433,73 @@ app.get('/api/multimedia/Picture/*', function (req, res) {
       res.end(data)})
 });
 
+function thumbnailImage(fileOrPath,res){
+  imageThumbnail(fileOrPath,{ height: 100 })
+    .then(thumbnail => { 
+      res.writeHead(200, {'Content-Type': 'image/jpeg'})
+      res.end(thumbnail)
+      console.log(thumbnail) 
+  })
+}
+
+app.get('/api/multimediaThumbnail/Picture/*', function (req, res) {
+  //res.header("Access-Control-Allow-Origin", "*");
+  
+  thumbnailImage('multimedia/Picture/'+req.params[0],res)
+
+});
+
+
+
 app.get('/api/multimedia/pdf/*', function (req, res) {
   //res.header("Access-Control-Allow-Origin", "*");
   fs.readFile('multimedia/pdf/'+req.params[0], function(err, data) {
     if (err) throw err // Fail if the file can't be read.
       res.writeHead(200, {'Content-Type': 'application/pdf'})
       res.end(data)})
+});
+
+app.get('/api/multimediaThumbnail/pdf/*', function (req, res) {
+  //res.header("Access-Control-Allow-Origin", "*");
+  
+  fs.readFile('multimedia/pdf/'+req.params[0], function(err, originalPdfData) {
+    (async () => {
+      const converted_result = await pdftopic.pdftobuffer(originalPdfData, 0);
+      thumbnailImage(converted_result[0],res)  
+    })();
+  })
+});
+
+app.get('/api/multimedia/doc/*', function (req, res) {
+  //res.header("Access-Control-Allow-Origin", "*");
+  fs.readFile('multimedia/doc/'+req.params[0], function(err, data) {
+    if (err) throw err // Fail if the file can't be read.
+      res.writeHead(200, {'Content-Type': 'application/vnd.openxmlformats-officedocument.wordprocessingml.document'})
+      res.end(data)})
+});
+
+app.get('/api/multimediaThumbnail/doc/*', function (req, res) {
+  //res.header("Access-Control-Allow-Origin", "*");
+  console.log('receiving data ...');
+  console.log('body is ',req.body);
+  exec('cp multimedia/doc/'+req.params[0]+' temp.docx; libreoffice --headless --convert-to pdf temp.docx', (err, stdout, stderr) => {
+    if (err) {
+      // node couldn't execute the command
+      return;
+    }
+  
+    // the *entire* stdout and stderr (buffered)
+    console.log(`stdout: ${stdout}`);
+    console.log(`stderr: ${stderr}`);
+    fs.readFile('temp.pdf', function(err, originalPdfData) {
+      (async () => {
+        console.log(originalPdfData)
+        const converted_result = await pdftopic.pdftobuffer(originalPdfData, 0);
+        thumbnailImage(converted_result[0],res) 
+      })();
+    })
+  });
+  
 });
 
 
@@ -475,12 +578,6 @@ app.post('/api/multimedia/delete', function(req, res) {
   });  
 
 });
-
-
-
-
-
-
 
 
 
