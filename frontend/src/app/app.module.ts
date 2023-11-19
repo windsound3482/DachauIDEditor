@@ -10,7 +10,6 @@ import {MatPaginatorModule} from '@angular/material/paginator';
 import { MatInputModule } from '@angular/material/input';
 import {DragDropModule} from '@angular/cdk/drag-drop';
 import { RelationHandlerComponent } from './relation-handler/relation-handler.component';
-import { MultimediaHandlerComponent } from './multimedia-handler/multimedia-handler.component';
 import {FormsModule,ReactiveFormsModule} from '@angular/forms';
 import {NgIf} from '@angular/common';
 import {MatButtonModule} from '@angular/material/button';
@@ -32,6 +31,7 @@ import { AddMultiRelationDialogComponent } from './add-multi-relation-dialog/add
 import { FileExplorerComponent } from './file-explorer/file-explorer.component';
 import { MatToolbarModule } from '@angular/material/toolbar';
 import {MatDividerModule} from '@angular/material/divider';
+import { MultimediaPreviewComponent } from './multimedia-preview/multimedia-preview.component';
 
 
 
@@ -40,7 +40,6 @@ import {MatDividerModule} from '@angular/material/divider';
   declarations: [
     AppComponent,
     RelationHandlerComponent,
-    MultimediaHandlerComponent,
     PeopleInformationComponent,
     NetworkgraphComponent,
     AddObjectDialogComponent,
@@ -48,7 +47,8 @@ import {MatDividerModule} from '@angular/material/divider';
     ConfirmDeleteRelationDialogComponent,
     AddMultiObjectDialogComponent,
     AddMultiRelationDialogComponent,
-    FileExplorerComponent
+    FileExplorerComponent,
+    MultimediaPreviewComponent
   ],
   imports: [
     BrowserModule,

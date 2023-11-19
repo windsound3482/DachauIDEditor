@@ -2,8 +2,13 @@
     width: 49vw;
     height:85vh;
   }
+
+
+
+.networkgraph{
   
-  .example-header-image {
-    background-image: url('https://image.geo.de/30086896/t/Mz/v3/w1440/r1/-/einstein-gross-jpg--41890-.jpg');
-    background-size: cover;
-  }
+    width: 48vw;
+    height: calc( 85vh - 150px );
+
+
+}

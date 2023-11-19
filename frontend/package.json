@@ -23,6 +23,7 @@
     "@swimlane/ngx-charts": "^20.4.1",
     "@swimlane/ngx-graph": "^8.0.2",
     "d3": "^7.8.5",
+    "gm": "^1.25.0",
     "ngx-doc-viewer": "^15.0.1",
     "ngx-papaparse": "^8.0.0",
     "rxjs": "~7.8.0",

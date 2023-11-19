@@ -1,4 +1,4 @@
-import { Component ,Input,Output, EventEmitter,ViewChild,TemplateRef} from '@angular/core';
+import { Component ,Input,Output, EventEmitter,ViewChild,TemplateRef,HostListener} from '@angular/core';
 import { DatabaseService } from '../database.service';
 import { NetworkgraphService } from '../networkgraph.service';
 import { ComfirmDeleteObjectDialogComponent } from '../comfirm-delete-object-dialog/comfirm-delete-object-dialog.component';
@@ -6,6 +6,7 @@ import { ConfirmDeleteRelationDialogComponent } from '../confirm-delete-relation
 import {MatDialog} from '@angular/material/dialog';
 import { MultiMediaList } from '../parameter';
 import { AddObjectDialogComponent } from '../add-object-dialog/add-object-dialog.component';
+import { DomSanitizer, SafeHtml } from '@angular/platform-browser';
 
 export interface FileElement {
   id?: string;
@@ -24,7 +25,8 @@ export class NetworkgraphComponent {
   constructor(
     private service: DatabaseService,
     private networkservice:NetworkgraphService,
-    public dialog: MatDialog
+    public dialog: MatDialog,
+    private _sanitizer:DomSanitizer
   ) {}
   @Input() graphID="Left"
   nodes=[]
@@ -40,6 +42,13 @@ export class NetworkgraphComponent {
         this.currentPath='';
       });
     }
+    this.networkgraphView=[window.innerWidth/100*48,window.innerHeight/100*85-150-(this.MultiMediaContains()?250:0)]
+    console.log('here')
+    
+  }
+
+  ngOnInit() {
+    this.networkgraphView = [window.innerWidth/100*48,window.innerHeight/100*85-150-(this.MultiMediaContains()?250:0)];
     
   }
 
@@ -96,11 +105,12 @@ export class NetworkgraphComponent {
 
   }
   tooltip(node:any){
-    if (node.type=='Picture'){
-      return '<img  width=\'300\' src=\'api/multimedia/'+node.type+'/'+node.label+'\' alt=\' ' +node.label +' \' >'
+    if (node.type=='Picture' || node.type=='pdf'){
+      return `<img  height='100' src='api/multimediaThumbnail/${node.type}/${node.label}' alt='${node.label}' >`
     }
     
     return node.label
+    // 
   }
 
   openFile(node:any){
@@ -185,8 +195,9 @@ export class NetworkgraphComponent {
 
   
 
-  MultiMediaContains(){
-    return MultiMediaList.includes(this.currentObject.type)
+  MultiMediaContains():boolean{
+
+     return MultiMediaList.includes(this.currentObject.type)
   }
 
   checkoutFile(element: FileElement){
@@ -247,6 +258,14 @@ export class NetworkgraphComponent {
       console.log(data)
       this.updateFileElementQuery();
     });
+  }
+
+  networkgraphView:any=[400,600]
+
+
+  @HostListener('window:resize', ['$event'])
+  onWindowResize() {
+    this.networkgraphView=[window.innerWidth/100*48,window.innerHeight/100*85-150-(this.MultiMediaContains()?250:0)]
   }
 
 
