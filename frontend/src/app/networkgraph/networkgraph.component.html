@@ -1,10 +1,10 @@
-<div class='cardContext'>
-  <div class='networkgraph'>
-    <app-file-explorer *ngIf="MultiMediaContains()" [type]="currentObject.type" [fileElements]="fileElements"  [path]="currentPath" [canNavigateUp]="canNavigateUp" 
+<div class='networkgraph'>
+  <app-file-explorer *ngIf="MultiMediaContains()" [type]="currentObject.type" [fileElements]="fileElements"  [path]="currentPath" [canNavigateUp]="canNavigateUp" 
     (navigatedDown)="navigateToFolder($event)" (navigatedUp)="navigateUp()" (checkoutFile)="checkoutFile($event)" (deleteCurrentFile)="deleteCurrentFile($event)"></app-file-explorer>
-    <mat-divider></mat-divider>
-    <ngx-graph #RelationGraph
-      class="chart-container"
+
+    
+    <ngx-graph #RelationGraph 
+      [view]="networkgraphView"
       [links]="links"
       [nodes]="nodes"
       layout="dagre"
@@ -74,13 +74,9 @@
         </svg:g>
       </ng-template>
     </ngx-graph>
-  </div>
-
-  
-
-  <button mat-button color="primary" (click)="RelationGraph.zoomToFit();RelationGraph.center()"><mat-icon> zoom_out_map</mat-icon></button>
-
 </div>
+
+<button mat-button color="primary" (click)="RelationGraph.zoomToFit();RelationGraph.center()"><mat-icon> zoom_out_map</mat-icon></button>
 
 
 

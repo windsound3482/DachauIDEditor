@@ -1,0 +1,29 @@
+:host {
+    height: 250px;
+    overflow: scroll;
+    display: flex;
+    flex-direction: column;
+  }
+  
+  .file-or-folder {
+    padding: 8px;
+    overflow: hidden;
+  }
+  
+  .container{
+    overflow: hidden;
+  }
+  
+  .file-or-folder-icon {
+    width: 100px;
+    height: 100px;
+    font-size: 100px;
+  }
+  
+  .pointer {
+    cursor: pointer;
+  }
+  
+  .spacer {
+    flex: 1 1 auto;
+  }
