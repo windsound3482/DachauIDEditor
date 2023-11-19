@@ -79,14 +79,15 @@ export class DatabaseService {
     return data;
   }
 
-  async listObject(type:any,id:any){
+  async listObject(type:any,id:any,value:any=null){
     
     const url: string = 'http://localhost:4200/api/Objects';
     let response = await fetch(url,{
       method: 'POST',
       body: JSON.stringify({
         "type":type,
-        "id":id
+        "id":id,
+        "value":value
       }),
       headers: { "Content-Type": "application/json" }
     });
@@ -103,6 +104,20 @@ export class DatabaseService {
         'path':path,
         "name":name,
         "fileData":fileData
+      }),
+      headers: { "Content-Type": "application/json" }
+    });
+    let data: any = await response.json();
+    return data;
+  }
+
+  async deleteFile(type:string,name:string){
+    const url: string = 'http://localhost:4200/api/multimedia/delete';
+    let response = await fetch(url,{
+      method: 'POST',
+      body: JSON.stringify({
+        'type':type,
+        "name":name
       }),
       headers: { "Content-Type": "application/json" }
     });

@@ -5,6 +5,7 @@ import { ComfirmDeleteObjectDialogComponent } from '../comfirm-delete-object-dia
 import { ConfirmDeleteRelationDialogComponent } from '../confirm-delete-relation-dialog/confirm-delete-relation-dialog.component';
 import {MatDialog} from '@angular/material/dialog';
 import { MultiMediaList } from '../parameter';
+import { AddObjectDialogComponent } from '../add-object-dialog/add-object-dialog.component';
 
 export interface FileElement {
   id?: string;
@@ -33,6 +34,12 @@ export class NetworkgraphComponent {
   @Input() set refreshWithType(data:any){
     this.refreshTheGraph(data);
     this.currentObject=data;
+    if (MultiMediaList.includes(data.type) && (data.id=='' || !data.id)){
+      this.service.getFileStructure(data.type).then((data) => {
+        this.currentRoot=null;
+        this.currentPath='';
+      });
+    }
     
   }
 
@@ -43,21 +50,15 @@ export class NetworkgraphComponent {
       this.nodes=data.nodes?Object.assign(data.nodes):null;
       
       this.links=data.links?Object.assign(data.links):null;
-      console.log(this.nodes)
-      if (MultiMediaList.includes(object.type)){
-        this.service.getFileStructure(object.type).then((data) => {
-          this.map=data;
-          this.currentRoot=null;
-          this.updateFileElementQuery();
-        });
-      }
+      if (MultiMediaList.includes(object.type) )
+        this.refreshFileMap()
+      
       
     });
   }
 
   @Output() nodeChanged= new EventEmitter<any>();;
   onNodeClick(node:any){
-    console.log(node)
     this.nodeChanged.emit(
       {
         type:node.type,
@@ -75,7 +76,6 @@ export class NetworkgraphComponent {
     instance.type = node.type;
     dialogRef.afterClosed().subscribe((result:any) => {
       if (result!=null){
-        console.log(result)
         this.nodeChanged.emit(result.data)
       }
     });
@@ -89,7 +89,7 @@ export class NetworkgraphComponent {
     
     dialogRef.afterClosed().subscribe((result:any) => {
       if (result!=null){
-        console.log(result)
+  
         this.nodeChanged.emit(this.currentObject)
       }
     });
@@ -101,6 +101,23 @@ export class NetworkgraphComponent {
     }
     
     return node.label
+  }
+
+  openFile(node:any){
+    if (MultiMediaList.includes(node.type))
+    {
+      
+      let path='multimedia/'+node.type+'/'+node.label
+      let splitedPath = path.split("/");
+      path=splitedPath.slice(0, splitedPath.length - 1).join("/");
+      this.currentPath=splitedPath.slice(1, splitedPath.length - 1).join("/") + "/";
+      console.log(this.map)
+      console.log(path)
+      this.currentRoot=this.map.find(o => o.id === path);
+      this.canNavigateUp = true;
+      this.updateFileElementQuery();
+    }
+   
   }
 
 
@@ -139,18 +156,18 @@ export class NetworkgraphComponent {
 
   
   updateFileElementQuery() {
-    console.log(this.currentRoot)
+   
     this.fileElements = this.queryInFolder(this.currentRoot ? this.currentRoot.id : 'root');
   }
 
   navigateUp() {
-    console.log(this.currentPath)
+   
     if (this.currentRoot && this.currentRoot.parent === 'root') {
       this.currentRoot = null;
       this.canNavigateUp = false;
       this.updateFileElementQuery();
     } else {
-      this.currentRoot = this.map.find(o => o.id === this.currentRoot.parent);;
+      this.currentRoot = this.map.find(o => o.id === this.currentRoot.parent);
       this.updateFileElementQuery();
     }
     
@@ -166,13 +183,70 @@ export class NetworkgraphComponent {
   }
 
 
-  openFile(node:any){
-    if (MultiMediaList.includes(node.type))
-      window.open('api/multimedia/'+node.type+'/'+node.label)
-  }
+  
 
   MultiMediaContains(){
     return MultiMediaList.includes(this.currentObject.type)
+  }
+
+  checkoutFile(element: FileElement){
+    let checkpath=(this.currentPath).split(this.currentObject.type+'/')[1]
+    this.service.listObject(null,null,checkpath+element.name).then((data) => {
+      console.log(data)
+      if (data.result){
+        this.nodeChanged.emit(data.node)
+      }
+      else{
+        const dialogRef = this.dialog.open(AddObjectDialogComponent);
+        
+        let instance = dialogRef.componentInstance;
+        instance.id=null;
+        instance.path= checkpath
+        instance.name = element.name;
+        instance.type = this.currentObject.type;
+        instance.title = this.currentObject.type;
+        instance.multimedia=true;
+        instance.valueEditDisabled=true;
+        instance.PathEditDisabled=true;
+        dialogRef.afterClosed().subscribe(result => {
+          if (result!=null){
+            console.log(result)
+            this.nodeChanged.emit(result.data)
+          }
+        });
+      }
+    })
+  }
+
+  deleteCurrentFile(element: FileElement){
+    let checkpath=(this.currentPath).split(this.currentObject.type+'/')[1]
+    const dialogRef = this.dialog.open(ComfirmDeleteObjectDialogComponent);
+    let instance = dialogRef.componentInstance;
+    instance.id = null;
+    instance.name = checkpath+element.name;
+    instance.type = this.currentObject.type;
+    instance.multimedia = true
+    dialogRef.afterClosed().subscribe((result:any) => {
+      if (result!=null){
+        
+        this.updateFileElementQuery();
+
+        if (result.exist && this.currentObject.data==(checkpath+element.name))
+          
+          this.nodeChanged.emit(result.data)
+        else
+            this.nodeChanged.emit(this.currentObject)
+        
+      }
+    });
+  }
+
+  refreshFileMap(){
+    this.service.getFileStructure(this.currentObject.type).then((data) => {
+      this.map=data;
+      console.log(data)
+      this.updateFileElementQuery();
+    });
   }
 
 

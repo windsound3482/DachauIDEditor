@@ -1,6 +1,7 @@
 <div class='cardContext'>
   <div class='networkgraph'>
-    <app-file-explorer *ngIf="MultiMediaContains()" [type]="currentObject.type" [fileElements]="fileElements"  [path]="currentPath" [canNavigateUp]="canNavigateUp" (navigatedDown)="navigateToFolder($event)" (navigatedUp)="navigateUp()"></app-file-explorer>
+    <app-file-explorer *ngIf="MultiMediaContains()" [type]="currentObject.type" [fileElements]="fileElements"  [path]="currentPath" [canNavigateUp]="canNavigateUp" 
+    (navigatedDown)="navigateToFolder($event)" (navigatedUp)="navigateUp()" (checkoutFile)="checkoutFile($event)" (deleteCurrentFile)="deleteCurrentFile($event)"></app-file-explorer>
     <mat-divider></mat-divider>
     <ngx-graph #RelationGraph
       class="chart-container"

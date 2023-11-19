@@ -17,11 +17,31 @@ export class ComfirmDeleteObjectDialogComponent {
   id:any=null;
   name:string="";
   type:string="";
+  multimedia=false;
   OnConfirmClick():void{
-    this.service.deleteObject(this.id,this.type).then((data) => {
-      this.dialogRef.close({data:data.data});
-      this._snackBar.open(data['Msg'], "close");
-    });
+    if (!this.multimedia)
+      this.service.deleteObject(this.id,this.type).then((data) => {
+        
+          this.dialogRef.close({data:data.data});
+          this._snackBar.open(data['Msg'], "close");
+      });
+    else{
+      this.service.deleteFile(this.type,this.type+"/"+this.name)
+      this.service.listObject(null,null,this.name).then((data) => {
+        console.log(data)
+        if (data.result){
+          this.service.deleteObject(data.node.id,data.node.type).then((data) => {
+            this.dialogRef.close({data:data.data,exist:true});
+            this._snackBar.open(data['Msg'], "close");
+          });
+        }
+        else{
+          this.dialogRef.close({exist:false});
+          this._snackBar.open("The Picture has been deleted from the disk", "close");
+        }
+      })
+    }
+    
   }
 
   onNoClick(): void {

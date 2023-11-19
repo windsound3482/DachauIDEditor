@@ -154,7 +154,9 @@ export class PeopleInformationComponent  {
       dialogRef.afterClosed().subscribe(result => {
         if (result!=null){
           console.log(result)
+          
           this.currentObjectChange(result.data)
+
         }
       });
       file.value='';
