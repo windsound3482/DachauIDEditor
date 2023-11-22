@@ -11,7 +11,7 @@
          
           <div fxLayout="column" xLayoutAlign="space-between center" (click)="navigate(element)" (dblclick)="open(element)" (contextmenu)="deleteFile(element)">
 
-            <mat-icon s color="primary" class="file-or-folder-icon pointer" *ngIf="element.isFolder">folder</mat-icon>
+            <mat-icon color="primary" class="file-or-folder-icon pointer" *ngIf="element.isFolder">folder</mat-icon>
             <div *ngIf="!element.isFolder">
               <app-multimedia-preview [url]="'api/multimediaThumbnail/'+path+element.name" [type]="type"></app-multimedia-preview>
             </div>

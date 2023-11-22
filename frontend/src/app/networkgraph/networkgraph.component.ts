@@ -212,7 +212,7 @@ export class NetworkgraphComponent {
         
         let instance = dialogRef.componentInstance;
         instance.id=null;
-        instance.path= checkpath
+        instance.path= checkpath.slice(0, -1)
         instance.name = element.name;
         instance.type = this.currentObject.type;
         instance.title = this.currentObject.type;
