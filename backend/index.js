@@ -11,6 +11,10 @@ const imageThumbnail = require('image-thumbnail');
 const streamtoarray = require('stream-to-array');
 const imagemagick = require("imagemagick-stream");
 const { exec } = require('child_process');
+const  EmlParser = require('eml-parser');
+const nodeHtmlToImage = require('node-html-to-image');
+
+
 
 //helpfunction imagemagickconverter
 const imagemagickconverter = async (pdf,type) => {
@@ -481,7 +485,6 @@ app.get('/api/multimedia/doc/*', function (req, res) {
 app.get('/api/multimediaThumbnail/doc/*', function (req, res) {
   //res.header("Access-Control-Allow-Origin", "*");
   console.log('receiving data ...');
-  console.log('body is ',req.body);
   exec('cp multimedia/doc/'+req.params[0]+' temp.docx; libreoffice --headless --convert-to pdf temp.docx', (err, stdout, stderr) => {
     if (err) {
       // node couldn't execute the command
@@ -500,6 +503,59 @@ app.get('/api/multimediaThumbnail/doc/*', function (req, res) {
     })
   });
   
+});
+
+
+
+app.get('/api/multimedia/Email/*', function (req, res) {
+  //res.header("Access-Control-Allow-Origin", "*");
+  fs.readFile('multimedia/Email/'+req.params[0], function(err, data) {
+    if (err) throw err // Fail if the file can't be read.
+      res.writeHead(200, {'Content-Type': 'application/vnd.ms-outlook'})
+      res.end(data)})
+});
+
+async function sendResHtml(html,res){
+  const image=await nodeHtmlToImage({
+    html: `<html>
+    <head>
+      <style>
+        body {
+          width: 470px;
+          height: 300px;
+        }
+      </style>
+    </head>
+    <body>${html}</body>
+    </html>`,
+    puppeteerArgs: {
+      args:  ['--no-sandbox' ,'--disable-setuid-sandbox']
+    }
+  });
+  res.writeHead(200, { 'Content-Type': 'image/png' });
+  res.end(image, 'binary');
+}
+
+app.get('/api/multimediaThumbnail/Email/*', function (req, res) {
+  //res.header("Access-Control-Allow-Origin", "*");
+  console.log('receiving data ...');
+  let  file = fs.createReadStream('multimedia/Email/'+req.params[0])
+  if (req.params[0].slice(-3)=='eml')
+    new  EmlParser(file).getEmailAsHtml().then(html=>{
+      sendResHtml(html,res)
+    })
+    
+    .catch(err  => {
+      console.log(err);
+    })
+  if (req.params[0].slice(-3)=='msg')
+    new  EmlParser(file).getMessageAsHtml().then(html=>{
+      sendResHtml(html,res)
+    })
+    
+    .catch(err  => {
+      console.log(err);
+    })
 });
 
 

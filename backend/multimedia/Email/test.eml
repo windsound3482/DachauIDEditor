@@ -1,0 +1,133 @@
+Delivered-To: jilinliao99@gmail.com
+Received: by 2002:a05:7000:2a45:b0:533:555a:e1b0 with SMTP id l5csp2998750maz;
+        Wed, 15 Nov 2023 11:53:45 -0800 (PST)
+X-Google-Smtp-Source: AGHT+IHImCVVIUfthDfSz5RDBN372zcIvs6CK4WXVSPTUoXyfqZa4A9Ay08dO9jtakek3BTONba0
+X-Received: by 2002:a05:6000:184c:b0:32d:a022:8559 with SMTP id c12-20020a056000184c00b0032da0228559mr9336287wri.47.1700078025368;
+        Wed, 15 Nov 2023 11:53:45 -0800 (PST)
+ARC-Seal: i=1; a=rsa-sha256; t=1700078025; cv=none;
+        d=google.com; s=arc-20160816;
+        b=x8uo2X8XErNogVXCP9XSvcHRdi1ra3vOPSbDykMmmCemDsm8gyUBlV2Xtm90kabqNV
+         xJgGuVxfegAe56qkNbP1thqg3rx4TlLxW8ao1OoTaB+ksozC0uUjA79pExhLFhI+jChs
+         vMNMqONgdY1QPgUVEaIW4weSihEEhtT4TEad05JWMV43FIC6J6EY1Dc8nOQvtndtIGyo
+         3tEShvtVKNpkEvi86xknSD64FHrHFKlcSmLaF+x0RLe+ctg4NPvm490rfc5X68bQwnZ7
+         L/poOaoFBpBSNjmI9CH7VQdbYg1z1rg74pIfUXEzZn1oNqFzGQTYBAclELcCY9A7Sf0C
+         JSKA==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20160816;
+        h=to:content-transfer-encoding:mime-version:subject:reply-to:from
+         :date:message-id:dkim-signature;
+        bh=OzYkoJVeE33g18gvTXMoMD2tMmMu6hdP6fDqnw8FUUo=;
+        fh=zEMK+f3w3jEJ+rVETDLljm1MjZ16EIk9osNt+OMcE4w=;
+        b=gDfYKonCNEFSzl5p91hW7HoNnkqyyUbuDwcc/9QTzsdTP+LEH/odFSFLEXth+eKngR
+         3bg6EoImA6VVGIUlawmMOdg6p4u0DEsRcVWOCLOQBrUXNO+2W7bGG7YkzDJ/34S+9Tvf
+         BBw/oLg/NJmalAhzqQ7dIdqVgwOxOw5CZT+lPIXTHPp1JT/RMMw0ky95ikiCfoBg5F6z
+         t1OvOPij2wxdERKPgMS8qLIzONWJ8hHvKCVL8VmdAzT1HL6ey1/iyEcSAdriWSbualZP
+         vQsZi8jSsCgYYGww/zE0iic7K6cqGr50dXvAKD+DEaSee3kn4BfsUghqcmoz6T7fd36E
+         Es9A==
+ARC-Authentication-Results: i=1; mx.google.com;
+       dkim=pass header.i=@tum.de header.s=tu-postout21 header.b=aU8nSxgO;
+       spf=pass (google.com: domain of it-support@tum.de designates 129.187.254.151 as permitted sender) smtp.mailfrom=it-support@tum.de;
+       dmarc=pass (p=NONE sp=NONE dis=NONE) header.from=tum.de
+Return-Path: <it-support@tum.de>
+Received: from forwout3.mail.lrz.de (forwout3.mail.lrz.de. [129.187.254.151])
+        by mx.google.com with ESMTPS id dj5-20020a0560000b0500b0032f7c837db7si6718822wrb.280.2023.11.15.11.53.45
+        for <jilinliao99@gmail.com>
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Wed, 15 Nov 2023 11:53:45 -0800 (PST)
+Received-SPF: pass (google.com: domain of it-support@tum.de designates 129.187.254.151 as permitted sender) client-ip=129.187.254.151;
+Authentication-Results: mx.google.com;
+       dkim=pass header.i=@tum.de header.s=tu-postout21 header.b=aU8nSxgO;
+       spf=pass (google.com: domain of it-support@tum.de designates 129.187.254.151 as permitted sender) smtp.mailfrom=it-support@tum.de;
+       dmarc=pass (p=NONE sp=NONE dis=NONE) header.from=tum.de
+Received: from postforw2.mail.lrz.de (lxmhs62.srv.lrz.de [IPv6:2001:4ca0:0:116::a9c:63e])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	(No client certificate requested)
+	by forwout1.mail.lrz.de (Postfix) with ESMTPS id 4SVv483C6pz10h
+	for <jilinliao99@gmail.com>; Wed, 15 Nov 2023 20:53:44 +0100 (CET)
+Received: from BADWLRZ-SWEX01B.ads.mwn.de (badwlrz-swex01b.ads.mwn.de [10.156.54.192])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+	(No client certificate requested)
+	by postforw2.mail.lrz.de (Postfix) with ESMTPS id 4SVv4836KHzyTV
+	for <go69ges@exchwl.mytum.de>; Wed, 15 Nov 2023 20:53:44 +0100 (CET)
+Received: from postout1.mail.lrz.de (10.156.6.64) by
+ BADWLRZ-SWEX01B.ads.mwn.de (10.156.54.192) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.1258.27; Wed, 15 Nov 2023 20:53:44 +0100
+Received: from lxmhs51.srv.lrz.de (localhost [127.0.0.1])
+	by postout1.mail.lrz.de (Postfix) with ESMTP id 4SVv476K6gzyTd;
+	Wed, 15 Nov 2023 20:53:43 +0100 (CET)
+Authentication-Results: postout.lrz.de (amavisd-new); dkim=pass (2048-bit key)
+	reason="pass (just generated, assumed good)" header.d=tum.de
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=tum.de; h=
+	content-transfer-encoding:content-type:content-type:mime-version
+	:subject:subject:reply-to:from:from:date:date:message-id
+	:received:received:received:received; s=tu-postout21; t=
+	1700078023; bh=OzYkoJVeE33g18gvTXMoMD2tMmMu6hdP6fDqnw8FUUo=; b=a
+	U8nSxgOjApmMWdqTUx3rwuYBq4pMoDHuO+bl2h09AunOIwx6VA+FN4zkL2eevIdq
+	5hXNiPILOjB4po+ApYGOJwIshKrZH8hUaNfb8qfVNzUFWegnifryKCOVCwtVsoWN
+	dmwvuFyErA4KmiWKbkpDUzLFM9qPDBkOAdHVoaD44EyKjpPl+IwhFcP6X9Qr14VC
+	9gK8PH+Id0y1b4E4InfKRTtmzT1rRQMsoNavWNkNTpaQSNEPDVw1mX4YNgKmRxH4
+	xgcAhlThKydxReyZ0+jcOPfOlkYKCTyAMcDiY7mPK0K8/FV+4fZV+poXtIiCzu9n
+	wLj4Wmkbfr9M+nW5/xPHg==
+X-Virus-Scanned: by amavisd-new at lrz.de in lxmhs51.srv.lrz.de
+X-Spam-Flag: NO
+X-Spam-Score: -99.652
+X-Spam-Level:
+X-Spam-Status: No, score=-99.652 tagged_above=-999 required=5
+	tests=[ALL_TRUSTED=-1, BAYES_00=-1.9, DMARC_ADKIM_RELAXED=0.001,
+	DMARC_ASPF_RELAXED=0.001, DMARC_POLICY_NONE=0.001,
+	LRZ_CT_PLAIN_UTF8=0.001, LRZ_DMARC_FAIL=0.001,
+	LRZ_DMARC_FAIL_NONE=0.001, LRZ_DMARC_POLICY=0.001,
+	LRZ_DMARC_TUM_FAIL=0.001, LRZ_DMARC_TUM_REJECT=3.5,
+	LRZ_DMARC_TUM_REJECT_PO=-3.5, LRZ_ENVFROM_FROM_NO_MATCH=0.001,
+	LRZ_ENVFROM_TUM_S=0.001, LRZ_FROM_ENVFROM_ALIGNED_STRICT=0.001,
+	LRZ_FROM_HAS_A=0.001, LRZ_FROM_HAS_AAAA=0.001,
+	LRZ_FROM_HAS_MDOM=0.001, LRZ_FROM_HAS_MX=0.001,
+	LRZ_FROM_HOSTED_DOMAIN=0.001, LRZ_FROM_NAME_IN_ADDR=0.001,
+	LRZ_FROM_PHRASE=0.001, LRZ_FROM_PRE_SUR=0.001,
+	LRZ_FROM_PRE_SUR_PHRASE=0.001, LRZ_FROM_TUM_S=0.001, LRZ_HAS_CT=0.001,
+	LRZ_HAS_MIME_VERSION=0.001, LRZ_HAS_REPLY_TO=0.001, LRZ_HAS_SPF=0.001,
+	LRZ_HELO_TUM=0.001, LRZ_MSGID_JM_OTHER=0.001, LRZ_MSGID_NO_FQDN=0.001,
+	LRZ_NO_UA_HEADER=0.001, MISSING_HEADERS=1.021,
+	REPLYTO_WITHOUT_TO_CC=1.552, SPF_HELO_NONE=0.001, SPF_SOFTFAIL=0.665,
+	T_SCC_BODY_TEXT_LINE=-0.01, USER_IN_WELCOMELIST=-0.01,
+	USER_IN_WHITELIST=-100] autolearn=no autolearn_force=no
+Received: from postout1.mail.lrz.de ([127.0.0.1])
+	by lxmhs51.srv.lrz.de (lxmhs51.srv.lrz.de [127.0.0.1]) (amavisd-new, port 20024)
+	with LMTP id udmFqImjVZLe; Wed, 15 Nov 2023 20:53:43 +0100 (CET)
+Received: from mail.campus.tum.de (mail.campus.tum.de [129.187.125.236])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits))
+	(Client did not present a certificate)
+	by postout1.mail.lrz.de (Postfix) with ESMTPS id 4SVv472V3RzyTB;
+	Wed, 15 Nov 2023 20:53:43 +0100 (CET)
+Received: from mail.campus.tum.de (localhost.localdomain [127.0.0.1])
+	by mail.campus.tum.de (Proxmox) with ESMTP id 44C0E50142B;
+	Wed, 15 Nov 2023 20:53:43 +0100 (CET)
+Received: from cmit-db1 (unknown [192.168.190.201])
+	by mail.campus.tum.de (Proxmox) with ESMTP id 1C8C55013B7;
+	Wed, 15 Nov 2023 20:53:43 +0100 (CET)
+Message-ID: <-2110319796.1700078023112.JavaMail.javamailuser@localhost>
+Date: Wed, 15 Nov 2023 20:53:43 +0100 (CET)
+From: Juergen Pfeffer <juergen.pfeffer@tum.de>
+Reply-To: Juergen Pfeffer <juergen.pfeffer@tum.de>
+Subject: CSS: Class Evaluation
+Mime-Version: 1.0
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: quoted-printable
+To: Undisclosed recipients:;
+X-MS-Exchange-Organization-AuthAs: Internal
+
+Dear Students of the Class VO (POL20200) Computational Social Science,
+
+A couple of days ago, you received the invitation to evaluate the lecture p=
+art of this class that was taught by Dr. Mirjam Zadoff. In case you haven't=
+ done already, please participate in the class evaluation. Since this is th=
+e first lecture of Dr. Zadoff at TUM, it is very important to get a review =
+from everybody who participates in the class. Thank you for your support!
+Best wishes and I am looking forward to the projects! :)
+JP
+
+
+
+
