@@ -9,3 +9,11 @@
     height: calc( 85vh - 150px );
 
 }
+
+.HandlerFileViewer {
+    display:flex
+}
+
+.File{
+   flex-grow:100
+}

@@ -1,7 +1,9 @@
 <div class='networkgraph'>
-  <app-file-explorer *ngIf="MultiMediaContains()" [type]="currentObject.type" [fileElements]="fileElements"  [path]="currentPath" [canNavigateUp]="canNavigateUp" 
+  <div class="oneline" [ngClass]="{HandlerFileViewer: MultiMediaContains() && currentObject.data!=''}">
+    <app-file-explorer [ngClass]="{File: MultiMediaContains() && currentObject.data!=''}" class="HandlerFileFinder"  *ngIf="MultiMediaContains()" [type]="currentObject.type" [fileElements]="fileElements"  [path]="currentPath" [canNavigateUp]="canNavigateUp" 
     (navigatedDown)="navigateToFolder($event)" (navigatedUp)="navigateUp()" (checkoutFile)="checkoutFile($event)" (deleteCurrentFile)="deleteCurrentFile($event)"></app-file-explorer>
-
+    <app-multimedia-preview *ngIf="MultiMediaContains() && currentObject.data!=''" [height]="250" [url]="'api/multimediaThumbnail/'+currentObject.type+'/'+currentObject.data" [type]="currentObject.type"></app-multimedia-preview>
+  </div>
     
     <ngx-graph #RelationGraph 
       [view]="networkgraphView"

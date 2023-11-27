@@ -8,6 +8,7 @@ import { Component, Input, OnChanges, SimpleChanges, ViewChild, Output, EventEmi
 export class MultimediaPreviewComponent {
   @Input() type: string='';
   @Input() url: string='';
+  @Input() height=100;
 
   fileIconVisiable=true
   
