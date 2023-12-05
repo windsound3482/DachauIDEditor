@@ -13,6 +13,8 @@ export class RelationHandlerComponent {
     private _snackBar: MatSnackBar,
   ) {}
 
+  @Input() addIn={}
+
   
   @Input() set refreshaObject(data:any){
     this.confirm=false;
@@ -23,6 +25,7 @@ export class RelationHandlerComponent {
     this.bobject=data;
   }
   @Output() onChange = new EventEmitter<any>();
+  @Output() onDeleteAddIn = new EventEmitter<any>();
   aobject={
     id:null,
     type:"Person",
@@ -43,7 +46,7 @@ export class RelationHandlerComponent {
     return true;
   }
   onApplyClick(){
-    this.service.addRelation(this.aobject.id,this.relation,this.bobject.id).then((data) => {
+    this.service.addRelation(this.aobject.id,Object.keys(this.addIn).length ===0?this.relation:this.relation+'###'+JSON.stringify(this.addIn),this.bobject.id).then((data) => {
       if (data['error']){
         this.confirm=true;
       }
@@ -56,11 +59,17 @@ export class RelationHandlerComponent {
   }
 
   OnConfirmClick():void{
-    this.service.addRelation(this.aobject.id,this.relation,this.bobject.id,true).then((data) => {
+    this.service.addRelation(this.aobject.id,Object.keys(this.addIn).length ===0?this.relation:this.relation+'###'+JSON.stringify(this.addIn),this.bobject.id,true).then((data) => {
       this._snackBar.open(data['Msg'], "close");
       this.onChange.emit("");
     });
   }
+
+  deleteAddin(key:any){
+    this.onDeleteAddIn.emit(key)
+  }
+
+
   
   
   

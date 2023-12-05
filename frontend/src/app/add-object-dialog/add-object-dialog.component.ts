@@ -34,10 +34,17 @@ export class AddObjectDialogComponent {
 
   OnApplyClick():void{
     if (this.multimedia==true){
-      this.service.addObject(this.id,this.type,this.path+(this.path==""?'':'/')+this.name,true).then((data) => {
+      this.service.addObject(this.id,this.type,this.path+(this.path==""?'':'/')+this.name,true).then((databasedata) => {
+        
         if (!this.PathEditDisabled)
-          this.service.uploadFile(this.type+'/'+this.path,this.type+'/'+this.path+'/'+this.name,this.multiMediaFile)
-        this.dialogRef.close({data:data.data});
+        {
+          this.service.uploadFile(this.type+'/'+this.path,this.type+'/'+this.path+'/'+this.name,this.multiMediaFile).then((data) => {
+            this.dialogRef.close({data:databasedata.data});
+          })
+        }
+        else
+          
+        this.dialogRef.close({data:databasedata.data});
       });
     }
     else{

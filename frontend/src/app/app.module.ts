@@ -32,6 +32,8 @@ import { FileExplorerComponent } from './file-explorer/file-explorer.component';
 import { MatToolbarModule } from '@angular/material/toolbar';
 import {MatDividerModule} from '@angular/material/divider';
 import { MultimediaPreviewComponent } from './multimedia-preview/multimedia-preview.component';
+import { ObjectSelectorComponent } from './object-selector/object-selector.component';
+import { ObjectListComponent } from './object-list/object-list.component';
 
 
 
@@ -48,7 +50,9 @@ import { MultimediaPreviewComponent } from './multimedia-preview/multimedia-prev
     AddMultiObjectDialogComponent,
     AddMultiRelationDialogComponent,
     FileExplorerComponent,
-    MultimediaPreviewComponent
+    MultimediaPreviewComponent,
+    ObjectSelectorComponent,
+    ObjectListComponent
   ],
   imports: [
     BrowserModule,

@@ -1,0 +1,13 @@
+.table-row {
+    height: 35px !important;
+  }
+
+.table-row-hover{
+  height: 35px !important;
+}
+
+
+.table-row-hover:hover{
+  background-color: rgba(0, 0, 0, .05);
+  cursor: pointer;
+}

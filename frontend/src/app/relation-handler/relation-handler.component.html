@@ -1,62 +1,21 @@
-<table class="example-full-width" cellspacing="0"><tr>
-    <td>
-      <mat-form-field class="example-full-width">
-        <mat-label>ID</mat-label>
-        <input matInput [(ngModel)]="aobject.id" disabled="true">
-      </mat-form-field>
-      
-    </td>
-    <td>
-      <mat-form-field class="example-full-width">
-        <mat-label>Type</mat-label>
-        <input matInput [(ngModel)]="aobject.type"  disabled="true">
-      </mat-form-field>
-      
-    </td>
-    <td>
-      <mat-form-field class="example-full-width" >
-        <mat-label>Value</mat-label>
-        <input matInput [(ngModel)]="aobject.data" disabled="true">
-      </mat-form-field>
-    </td>
-    <td></td> <td></td> <td></td> <td></td> <td></td> <td></td> <td></td> <td></td> <td></td> <td></td> 
-    <td>
-      <mat-form-field class="example-full-width">
-        <mat-label>Relation</mat-label>
-        <input matInput [(ngModel)]="relation" (ngModelChange)="confirm=false">
-          <button *ngIf="!confirm" (click)="onApplyClick()" matSuffix mat-icon-button  [disabled]="inputCheck()" color="primary"> <mat-icon>cloud_upload</mat-icon> </button>
-          <button *ngIf="confirm" (click)="OnConfirmClick()" matSuffix mat-icon-button  [disabled]="inputCheck()" color="accent"> <mat-icon>cloud_upload</mat-icon> </button>
-          
-          
-          
-      </mat-form-field>
-      
-    </td>
-    <td></td> <td></td> <td></td> <td></td> <td></td> <td></td> <td></td> <td></td> <td></td> 
-
-
-    <td>
-      <mat-form-field class="example-full-width">
-        <mat-label>ID</mat-label>
-        <input matInput [(ngModel)]="bobject.id" disabled="true">
-      </mat-form-field>
-      
-    </td>
-    <td>
-      <mat-form-field class="example-full-width">
-        <mat-label>Type</mat-label>
-        <input matInput [(ngModel)]="bobject.type"  disabled="true">
-      </mat-form-field>
-      
-    </td>
-    <td>
-      <mat-form-field class="example-full-width">
-        <mat-label>Value</mat-label>
-        <input matInput [(ngModel)]="bobject.data" disabled="true">
-      </mat-form-field>
-    </td>
+<mat-card class="example-card">
+  <mat-card-content>
     
-</tr></table>
+    <mat-form-field class="example-full-width">
+      <mat-label>Relation</mat-label>
+      <input matInput [(ngModel)]="relation" (ngModelChange)="confirm=false">
+        <button *ngIf="!confirm" (click)="onApplyClick()" matSuffix mat-icon-button  [disabled]="inputCheck()" color="primary"> <mat-icon>cloud_upload</mat-icon> </button>
+        <button *ngIf="confirm" (click)="OnConfirmClick()" matSuffix mat-icon-button  [disabled]="inputCheck()" color="accent"> <mat-icon>cloud_upload</mat-icon> </button>
+    </mat-form-field>
+    <div *ngFor="let item of addIn | keyvalue" >
+      <div (click)="deleteAddin(item.key)" class="addin">
+        <b>{{item.key}}</b> is <b>{{item.value}}</b>
+      </div>
+    </div>
+  </mat-card-content>
+</mat-card>
+
+
             
        
 

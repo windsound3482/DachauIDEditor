@@ -1,14 +1,25 @@
+
+
+
 .example-card {
-    width: 49vw;
-    height:85vh;
+    width: 42vw;
+    height:500px;
   }
 
 
 
 .networkgraph{
   
-    width: 48vw;
-    height: calc( 85vh - 150px );
+    width: 41vw;
+    height:350px;
 
 
+}
+
+.mat-select-panel {
+  width:200px
+}
+
+.dense-2 {
+  @include mat.all-component-densities(-2);
 }

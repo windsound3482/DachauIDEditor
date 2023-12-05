@@ -1,6 +1,10 @@
 .Handler1 {
     float:left;
-    width: 49vw;
+    width: 43vw;
+}
+.Handler2 {
+    float:left;
+    width: 14vw;
 }
 .ComponentSelector {
     width: 100%;

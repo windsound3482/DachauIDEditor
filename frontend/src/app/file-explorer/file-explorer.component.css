@@ -1,5 +1,6 @@
 :host {
-    height: 250px;
+    height:360px;
+    width:41vw;
     overflow: scroll;
     display: flex;
     flex-direction: column;
@@ -27,3 +28,7 @@
   .spacer {
     flex: 1 1 auto;
   }
+
+  .icon-display {
+    transform: scale(0.5);
+ }
