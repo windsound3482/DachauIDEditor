@@ -438,7 +438,7 @@ app.get('/api/multimedia/Picture/*', function (req, res) {
 });
 
 function thumbnailImage(fileOrPath,res){
-  imageThumbnail(fileOrPath,{ height: 250 })
+  imageThumbnail(fileOrPath,{ height:200})
     .then(thumbnail => { 
       res.writeHead(200, {'Content-Type': 'image/jpeg'})
       res.end(thumbnail)
@@ -610,13 +610,16 @@ app.post('/api/multimedia', function (req, res) {
 
 
 app.post('/api/multimedia/upload', function(req, res) {
+  console.log('Load Data')
   console.log('receiving data ...');
   console.log('body is ',req.body);
   fs.mkdirSync('multimedia/'+req.body['path'], { recursive: true })
   let base64Image = req.body['fileData'].split(';base64,').pop();
   fs.writeFileSync('multimedia/'+req.body['name'], base64Image, {encoding: 'base64'}, function(err) {
+    
     console.log('File created');
-});
+  });
+  res.send({"result":"Successful"})
 });
 
 app.post('/api/multimedia/delete', function(req, res) {
