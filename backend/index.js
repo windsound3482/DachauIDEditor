@@ -438,7 +438,7 @@ app.get('/api/multimedia/Picture/*', function (req, res) {
 });
 
 function thumbnailImage(fileOrPath,res){
-  imageThumbnail(fileOrPath,{ height:200})
+  imageThumbnail(fileOrPath,{ height:500})
     .then(thumbnail => { 
       res.writeHead(200, {'Content-Type': 'image/jpeg'})
       res.end(thumbnail)
