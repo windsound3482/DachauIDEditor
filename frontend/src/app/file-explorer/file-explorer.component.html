@@ -2,22 +2,41 @@
     <mat-icon *ngIf="canNavigateUp" class="pointer" (click)="navigateUp()">arrow_back</mat-icon>
     <span style="margin-left: 8px">{{path || 'Files'}}</span>
     <span class="spacer"></span>
+    <button mat-button (click)="pictureHeight=pictureHeight-20" [disabled]="pictureHeight==20">-</button>
+    <button mat-button (click)="pictureHeight=pictureHeight+20" [disabled]="pictureHeight>120">+</button>
+
  </mat-toolbar>
   
-  <div class="container" fxFlex fxLayout="row" fxLayoutAlign="space-between stretch">
+  <div class="container" *ngIf="pictureHeight>20" fxFlex fxLayout="row" fxLayoutAlign="space-between stretch">
     <div class="content" fxFlex fxLayout="row">
-      <mat-grid-list cols="4" rowHeight="150px" fxFlex>
-        <mat-grid-tile *ngFor="let element of fileElements" class=file-or-folder>
+      <mat-grid-list [cols]="boxWidth/pictureHeight*9/16"  [rowHeight]="pictureHeight+50" (window:resize)="onBoxResize($event)" fxFlex>
+        <mat-grid-tile *ngFor="let element of fileElements" [ngStyle]="{'width':pictureHeight+'px'}">
          
-          <div fxLayout="column" xLayoutAlign="space-between center" (click)="navigate(element)" (dblclick)="open(element)" (contextmenu)="deleteFile(element)">
-
-            <mat-icon color="primary" class="file-or-folder-icon pointer" *ngIf="element.isFolder">folder</mat-icon>
-            <div *ngIf="!element.isFolder">
-              <app-multimedia-preview [url]="'api/multimediaThumbnail/'+path+element.name" [type]="type"></app-multimedia-preview>
+          <div fxLayout="column" xLayoutAlign="space-between center" (click)="navigate(element)"  (contextmenu)="deleteFile(element)" (dblclick)="open(element)">
+        
+            <mat-icon color="primary"  *ngIf="element.isFolder"  [ngStyle]="{'font-size':pictureHeight+'px','height':pictureHeight+'px','width':pictureHeight+'px'}">folder</mat-icon>
+   
+            
+            <div *ngIf="!element.isFolder" style="text-align: center" >
+              <app-multimedia-preview [url]="'api/multimediaThumbnail/'+path+element.name" [type]="type" [height]="pictureHeight"></app-multimedia-preview>
             </div>
           
-            <div>{{element.name}}</div>
+            <div style="text-align: center">{{element.name}}</div>
             
+          </div>
+        </mat-grid-tile>
+      </mat-grid-list>
+    </div>
+  </div>
+
+  <div class="container" *ngIf="pictureHeight==20" fxFlex fxLayout="row" fxLayoutAlign="space-between stretch">
+    <div class="content" fxFlex fxLayout="row">
+      <mat-grid-list cols=1  [rowHeight]="pictureHeight" (window:resize)="onBoxResize($event)" fxFlex>
+        <mat-grid-tile *ngFor="let element of fileElements" (click)="navigate(element)"(dblclick)="open(element)" (contextmenu)="deleteFile(element)"  >
+          <div style="width: 100%; display: flex; align-items: flex-start;">
+            <mat-icon color="primary"  *ngIf="element.isFolder" [ngStyle]="{'font-size':pictureHeight+'px','height':pictureHeight+'px','width':pictureHeight+'px'}"  >folder</mat-icon>
+            <app-multimedia-preview *ngIf="!element.isFolder" [url]="'api/multimediaThumbnail/'+path+element.name" [type]="type" [height]="pictureHeight"></app-multimedia-preview>
+            {{element.name}}
           </div>
         </mat-grid-tile>
       </mat-grid-list>

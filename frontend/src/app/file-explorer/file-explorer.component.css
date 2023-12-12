@@ -1,7 +1,7 @@
 :host {
-    height:360px;
+    height:270px;
     width:41vw;
-    overflow: scroll;
+    
     display: flex;
     flex-direction: column;
   }
@@ -12,7 +12,8 @@
   }
   
   .container{
-    overflow: hidden;
+    overflow-x: auto;
+    overflow-y:auto;
   }
   
   .file-or-folder-icon {

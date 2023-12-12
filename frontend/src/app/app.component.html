@@ -32,7 +32,8 @@
   <div>
 
   <app-multimedia-preview *ngIf="leftObject.type=='Picture' && leftObject.data!=''" [height]="500" [url]="'api/multimedia/'+leftObject.type+'/'+leftObject.data" [type]="leftObject.type" (click)="imagePixel($event)"></app-multimedia-preview>
-  </div>
+  <app-multimedia-preview *ngIf="MultiMediaContains() && leftObject.type!='Picture' && leftObject.data!=''" [height]="500" [url]="'api/multimediaThumbnail/'+leftObject.type+'/'+leftObject.data" [type]="leftObject.type" ></app-multimedia-preview>  
+</div>
   
 
 </div>

@@ -3,7 +3,7 @@
 
 .example-card {
     width: 42vw;
-    height:500px;
+    height:380px;
   }
 
 
@@ -11,15 +11,11 @@
 .networkgraph{
   
     width: 41vw;
-    height:350px;
+    height:270px;
 
 
 }
 
 .mat-select-panel {
   width:200px
-}
-
-.dense-2 {
-  @include mat.all-component-densities(-2);
 }

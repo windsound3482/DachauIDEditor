@@ -1,4 +1,4 @@
 <img  [height]='height' (load)="fileIconVisiable=false" [src]="url" alt='element.name' *ngIf="type=='Picture' || type=='pdf' || type=='doc' || type=='Email'">
-<mat-icon color="primary" class="file-or-folder-icon pointer" *ngIf="fileIconVisiable">insert_drive_file</mat-icon>
+<mat-icon color="primary" [ngStyle]="{'font-size':height+'px','height':height+'px','width':height+'px'}" *ngIf="fileIconVisiable">insert_drive_file</mat-icon>
 
 <!--  -->

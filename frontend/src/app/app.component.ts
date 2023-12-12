@@ -95,8 +95,8 @@ export class AppComponent implements OnInit, AfterViewInit {
 
   imagePixel(e:any) {
     
-    this.relationAddinInformation.x=e.offsetX/e.target.offsetWidth
-    this.relationAddinInformation.y=e.offsetY/e.target.offsetHeight;
+    this.relationAddinInformation.x=Math.round(e.offsetX/e.target.offsetWidth * 1000) / 1000
+    this.relationAddinInformation.y=Math.round(e.offsetY/e.target.offsetHeight * 1000) / 1000;
   };
  
   deletAddIn(key:any){

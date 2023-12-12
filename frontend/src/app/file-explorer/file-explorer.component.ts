@@ -1,4 +1,4 @@
-import { Component, Input, OnChanges, SimpleChanges, ViewChild, Output, EventEmitter } from '@angular/core';
+import { Component, Input, SimpleChanges, OnInit, Output, EventEmitter } from '@angular/core';
 
 import { MatMenu, MatMenuTrigger } from '@angular/material/menu';
 
@@ -19,7 +19,7 @@ interface FileElement {
   styleUrls: ['./file-explorer.component.css']
 })
 
-export class FileExplorerComponent {
+export class FileExplorerComponent implements OnInit{
   constructor(public dialog: MatDialog) {}
 
   @Input() fileElements: FileElement[]=[];
@@ -32,6 +32,8 @@ export class FileExplorerComponent {
   @Output() navigatedUp = new EventEmitter();
   @Output() checkoutFile = new EventEmitter<FileElement>();
   @Output() deleteCurrentFile = new EventEmitter<FileElement>();
+
+  pictureHeight=80
   
 
   ngOnChanges(changes: SimpleChanges): void {}
@@ -52,11 +54,25 @@ export class FileExplorerComponent {
   }
 
   open(element: FileElement){
-    window.open('api/multimedia/'+this.path+element.name)
+    if (!element.isFolder) 
+      window.open('api/multimedia/'+this.path+element.name)
   }
 
   deleteFile(element: FileElement){
-    this.deleteCurrentFile.emit(element)
+    if (!element.isFolder) {
+      this.deleteCurrentFile.emit(element)
+    }
+  }
+
+  boxWidth=400
+
+  ngOnInit(): void {
+    this.boxWidth=window.innerWidth/100*41-40 ;
+  }
+
+  onBoxResize(box:any){
+    console.log(box)
+    this.boxWidth=window.innerWidth/100*41-40 ;
   }
 
 }
