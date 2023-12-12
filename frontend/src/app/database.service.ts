@@ -97,6 +97,7 @@ export class DatabaseService {
   }
 
   async uploadFile(path:string,name:string,fileData:any){
+  
     const url: string = 'http://localhost:4200/api/multimedia/upload';
     let response = await fetch(url,{
       method: 'POST',

@@ -1,14 +1,19 @@
 <div class="parent" (contextmenu)="openNote($event)">
   <div>
         
-    <div class='Handler1'>
-        <app-people-information #card [graphID]="'Left'" [typeList]="typelist" (refreshTypeListEvent)="getTypeList()" (onChangeObject)="leftObject=$event;relationRefresh();" ></app-people-information>
+    <div style="float:left;">
+        <app-people-information #card [graphID]="'Left'" [typeList]="typelist" (refreshTypeListEvent)="getTypeList()" (onChangeObject)="leftObject=$event;relationRefresh();relationAddinInformation={};" ></app-people-information>
         
     </div>
-    <div class='Handler2'>
+    <div  style="float:left;margin-left: 2px;">
+     <app-relation-handler [refreshaObject]="leftObject" [refreshbObject]="rightObject" (onChange)="relationRefresh();relationAddinInformation={}" [addIn]="relationAddinInformation" (onDeleteAddIn)="deletAddIn($event)"></app-relation-handler>
+    </div>
+    <div  style="float:left;margin-left: 2px;">
         <app-people-information #card [graphID]="'Right'" [typeList]="typelist" (refreshTypeListEvent)="getTypeList()" (onChangeObject)="rightObject=$event;relationRefresh();"></app-people-information>
     </div>
   </div>
+
+  
 
   <div >
     
@@ -18,12 +23,17 @@
     <button mat-button color="primary" (click)="RelaFileInput.click()"><mat-icon>attach_file</mat-icon> Upload Multi Relations</button>
   
      
-    <button mat-button color="primary" style="float:right;margin-right: 46.5vw;width: 6vw;" (click)="switchObject()"><mat-icon>compare_arrows</mat-icon></button>
+    <button mat-button color="primary" style="float:right;margin-right: 46.5vw;width: 6vw;" (click)="switchObject()"><mat-icon>keyboard_backspace</mat-icon></button>
     
     
     
   </div>
-  <app-relation-handler [refreshaObject]="leftObject" [refreshbObject]="rightObject" (onChange)="relationRefresh()"></app-relation-handler>
+  <br/>
+  <div>
+
+  <app-multimedia-preview *ngIf="leftObject.type=='Picture' && leftObject.data!=''" [height]="500" [url]="'api/multimedia/'+leftObject.type+'/'+leftObject.data" [type]="leftObject.type" (click)="imagePixel($event)"></app-multimedia-preview>
+  </div>
+  
 
 </div>
 

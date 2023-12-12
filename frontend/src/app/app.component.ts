@@ -5,6 +5,7 @@ import { CSVService } from './csv.service';
 import {MatDialog} from '@angular/material/dialog';
 import { AddMultiObjectDialogComponent } from './add-multi-object-dialog/add-multi-object-dialog.component';
 import { AddMultiRelationDialogComponent } from './add-multi-relation-dialog/add-multi-relation-dialog.component';
+import  {MultiMediaList} from './parameter';
 
 
 @Component({
@@ -37,9 +38,7 @@ export class AppComponent implements OnInit, AfterViewInit {
   }
 
   switchObject(){
-    let tempObject=Object.assign(this.components.first.currentObject)
     this.components.first.currentObjectChange(Object.assign(this.components.last.currentObject))
-    this.components.last.currentObjectChange(tempObject)
     this.relationRefresh()
     
   }
@@ -86,6 +85,22 @@ export class AppComponent implements OnInit, AfterViewInit {
 
   openNote($event:any) {
     $event.preventDefault();
+  }
+
+  MultiMediaContains(){
+    return MultiMediaList.includes(this.leftObject.type as string)
+  }
+
+  relationAddinInformation:any={}
+
+  imagePixel(e:any) {
+    
+    this.relationAddinInformation.x=e.offsetX/e.target.offsetWidth
+    this.relationAddinInformation.y=e.offsetY/e.target.offsetHeight;
+  };
+ 
+  deletAddIn(key:any){
+    delete this.relationAddinInformation[key]
   }
 
 }

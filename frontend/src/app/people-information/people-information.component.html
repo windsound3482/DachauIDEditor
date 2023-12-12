@@ -1,51 +1,76 @@
-<mat-card class="example-card">
-    <mat-card-header>
-      <mat-card-title>
-        <mat-form-field >
-          <mat-select [formControl]="typeControlValue" (openedChange)="onMatSelectOpen($event)" (selectionChange)="typeControl($event)">
-            <mat-optgroup label="Individual" >
-              <div *ngFor="let type of NotPropertyList" >
-                <mat-option *ngIf="typelistcontains(type)" [value]="type">
-                  {{type}}
-                </mat-option>
-              </div>
-            </mat-optgroup>
+<div>
+  <div *ngIf="graphID=='Right' || currentObject.data!=''">
+    <mat-card class="example-card">
+      <mat-card-header>
+        <mat-card-title>
+          <mat-toolbar style="height:50px">
+            {{currentObject.id}} &nbsp;&nbsp;
+            <div *ngIf="graphID=='Right'">
+              <mat-select [formControl]="typeControlValue" (openedChange)="onMatSelectOpen($event)" (selectionChange)="typeControl($event)" style="width: 180px">
+                <mat-optgroup label="Individual" >
+                  <div *ngFor="let type of NotPropertyList" >
+                    <mat-option *ngIf="typelistcontains(type)" [value]="type">
+                      {{type}}
+                    </mat-option>
+                  </div>
+                </mat-optgroup>
+                
+                <mat-optgroup label="MultiMedia" >
+                  <div *ngFor="let type of MultiMediaList" >
+                    <mat-option *ngIf="typelistcontains(type)" [value]="type">
+                      {{type}}
+                    </mat-option>
+                  </div>
+                </mat-optgroup>
+                
+                <mat-optgroup label="Property">
+                  <div *ngFor="let type of typeList" >
+                    <mat-option *ngIf="!NotPropertyList.includes(type.type) && !MultiMediaList.includes(type.type)" [value]="type.type">
+                      {{type.type}}
+                    </mat-option>
+                  </div>
+                  <mat-option value="Add New">-- Add New --</mat-option>
+                </mat-optgroup>
+              </mat-select>
             
-            <mat-optgroup label="MultiMedia" >
-              <div *ngFor="let type of MultiMediaList" >
-                <mat-option *ngIf="typelistcontains(type)" [value]="type">
-                  {{type}}
-                </mat-option>
-              </div>
-            </mat-optgroup>
-            
-            <mat-optgroup label="Property">
-              <div *ngFor="let type of typeList" >
-                <mat-option *ngIf="!NotPropertyList.includes(type.type) && !MultiMediaList.includes(type.type)" [value]="type.type">
-                  {{type.type}}
-                </mat-option>
-              </div>
-              <mat-option value="Add New">-- Add New --</mat-option>
-            </mat-optgroup>
-          </mat-select>
-        </mat-form-field>
-        <button mat-button color="primary" (click)="refreshType()"><mat-icon>refresh</mat-icon></button>
-        {{currentObject.data}}
-        
-      </mat-card-title>
-    </mat-card-header>
-    <mat-card-content>
-      <div class="networkgraph">
-      <app-networkgraph  [graphID]="graphID" [refreshWithType]="currentObject" (nodeChanged)="currentObjectChange($event)"></app-networkgraph>
-      </div>
-    </mat-card-content>
-    <mat-card-actions align="end">
-      <button mat-button color="accent" (click)="downloadCurrentObject()"> <mat-icon>cloud_download</mat-icon> {{currentObject.data!=""?currentObject.data:currentObject.type}}</button>
-      <button mat-button color="primary" *ngIf="!multiMediaListContains()" (click)="addObject()"> <mat-icon>library_add</mat-icon> add new {{currentObject.type}}<div *ngIf="currentObject.id!=null"> or Edit</div></button>
-      <input #multimediaInput hidden="true" type="file" class="file-upload" (change)="uploadMultiMedia($event.target)">
-      <button mat-button color="primary" *ngIf="multiMediaListContains()" (click)="multimediaInput.click()"><mat-icon>attach_file</mat-icon> add new {{currentObject.type}} </button>
+            <button mat-button color="primary" (click)="refreshType()"  style="margin-left: 1px"><mat-icon>refresh</mat-icon></button>
+          </div> &nbsp;&nbsp;
+          <div *ngIf="graphID=='Left'">
+            {{currentObject.type}}
+          </div>
+          &nbsp;&nbsp;{{currentObject.data}} 
+          <div *ngIf="graphID=='Right' && currentObject.id!=null">
+            <button mat-button color="primary" (click)="openFileInFolder()"  style="margin-left: 1px"><mat-icon>zoom_in</mat-icon></button>
+          </div>
+          </mat-toolbar>
+        </mat-card-title>
+      </mat-card-header>
+      <mat-card-content>
+        <div class="networkgraph">
+          <app-networkgraph *ngIf="graphID=='Left'"  [graphID]="graphID" [refreshWithType]="currentObject" (nodeChanged)="currentObjectChange($event)"></app-networkgraph>
+          <app-object-selector *ngIf="graphID=='Right'" [graphID]="graphID" [refreshWithType]="currentObject" (nodeChanged)="currentObjectChange($event)"></app-object-selector>
+        </div>
+      </mat-card-content>
+      <mat-card-actions align="end">
+        <button mat-button color="accent" (click)="downloadCurrentObject()"> <mat-icon>cloud_download</mat-icon> {{currentObject.data!=""?currentObject.data:currentObject.type}}</button>
+        <button mat-button color="primary" *ngIf="!multiMediaListContains()" (click)="addObject()"> <mat-icon>library_add</mat-icon> add new {{currentObject.type}}<div *ngIf="currentObject.id!=null"> or Edit</div></button>
+        <input #multimediaInput hidden="true" type="file" class="file-upload" (change)="uploadMultiMedia($event.target)">
+        <button mat-button color="primary" *ngIf="multiMediaListContains()" (click)="multimediaInput.click()"><mat-icon>attach_file</mat-icon> add new {{currentObject.type}} </button>
 
-      <button mat-button color="accent" [disabled]="currentObject.id=='' || currentObject.id==null" (click)="deleteObject()"><mat-icon>remove_circle_outline</mat-icon></button>
-      
-    </mat-card-actions>
-  </mat-card>
+        <button mat-button color="accent" [disabled]="currentObject.id=='' || currentObject.id==null" (click)="deleteObject()"><mat-icon>remove_circle_outline</mat-icon></button>
+        
+      </mat-card-actions>
+    </mat-card>
+  </div>
+
+  <div *ngIf="graphID=='Left' && currentObject.data==''">
+    <mat-card class="example-card">
+        <mat-card-content>
+          <h1>
+            No networkgraph Available.
+          </h1>
+        </mat-card-content>
+    </mat-card>
+  </div>
+</div>
+  

@@ -1,0 +1,5 @@
+<div class="oneline" >
+    <app-object-list *ngIf="!MultiMediaContains()" [objects]="objects" (nodeChanged)="nodeChanged.emit($event)"></app-object-list>
+    <app-file-explorer  class="HandlerFileFinder"  *ngIf="MultiMediaContains()" [type]="currentObject.type" [fileElements]="fileElements"  [path]="currentPath" [canNavigateUp]="canNavigateUp" 
+    (navigatedDown)="navigateToFolder($event)" (navigatedUp)="navigateUp()" (checkoutFile)="checkoutFile($event)" (deleteCurrentFile)="deleteCurrentFile($event)"></app-file-explorer>
+</div>

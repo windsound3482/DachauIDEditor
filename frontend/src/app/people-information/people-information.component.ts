@@ -4,6 +4,7 @@ import {FormControl} from '@angular/forms'
 import { AddObjectDialogComponent } from '../add-object-dialog/add-object-dialog.component';
 import { ComfirmDeleteObjectDialogComponent } from '../comfirm-delete-object-dialog/comfirm-delete-object-dialog.component';
 import { NetworkgraphComponent } from '../networkgraph/networkgraph.component';
+import { ObjectSelectorComponent } from '../object-selector/object-selector.component';
 import  {MultiMediaList} from '../parameter';
 import { NetworkgraphService } from '../networkgraph.service';
 import { CSVService } from '../csv.service';
@@ -19,6 +20,9 @@ export class PeopleInformationComponent  {
   @Output() onChangeObject = new EventEmitter<any>();
   @ViewChild(NetworkgraphComponent) 
   private networkComponent!: NetworkgraphComponent;
+  @ViewChild(ObjectSelectorComponent) 
+  private objectSelectorComponent!: ObjectSelectorComponent;
+
   
   MultiMediaList=MultiMediaList
   
@@ -64,7 +68,12 @@ export class PeopleInformationComponent  {
   }
 
   refreshRelation(){
-    this.networkComponent.refreshTheGraph(this.currentObject);
+    if (this.networkComponent)
+      this.networkComponent.refreshTheGraph(this.currentObject);
+    
+    if (this.objectSelectorComponent)
+      this.objectSelectorComponent.refreshTheGraph(this.currentObject);
+    
   }
 
   public onMatSelectOpen(form:any): void {
@@ -164,6 +173,10 @@ export class PeopleInformationComponent  {
     fileReader.readAsDataURL(file.files[0]);
     
     
+  }
+
+  openFileInFolder(){
+    this.objectSelectorComponent.openFile(this.currentObject);
   }
 
   
